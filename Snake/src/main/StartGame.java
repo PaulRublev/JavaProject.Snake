@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Point;
+import java.util.LinkedList;
 
 class AbstractObj {
 	
@@ -75,10 +76,31 @@ class Food extends AbstractObj {
 
 class SnakeBody extends AbstractObj {
 	
+	Point nextStepXY;
+	
 	SnakeBody(Point XY) {
 		super(XY);
 		symbol = '*';
 		empty = false;
+	}
+	
+}
+
+class Snake {
+	LinkedList<SnakeBody> snake = new LinkedList<SnakeBody>();
+	AbstractObj[][] array;
+	
+	Snake(AbstractObj[][] array) {
+		this.array = array;
+		snake.add(new SnakeBody(new Point(array[0].length / 2, array.length / 2)));
+		snake.add(new SnakeBody(new Point(snake.element().getX(), snake.element().getY() + 1)));
+		placingSnake();
+	}
+	
+	void placingSnake() {
+		for (SnakeBody snakeBody : snake) {
+			array[snakeBody.getY()][snakeBody.getX()] = snakeBody;
+		}
 	}
 	
 }
@@ -89,6 +111,12 @@ class Field {
 	
 	Field(int width, int height) {
 		array = new AbstractObj[height][width];
+		initField();
+		new Snake(array);
+		new Food(array);
+	}
+	
+	void initField() {
 		for (int i = 0; i < array.length; i++) {
 			for (int j = 0; j < array[i].length; j++) {
 				Point XY = new Point(i, j);
@@ -99,7 +127,6 @@ class Field {
 				}
 			}
 		}
-		new Food(array);
 	}
 	
 }
