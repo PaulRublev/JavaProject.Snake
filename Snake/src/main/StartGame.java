@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
+import main.Wall.Barrier;
+
 class AnyObject extends JLabel {
 	
 	final static int defaultThickness = 10;
@@ -117,7 +119,8 @@ class Snake implements KeyListener {
 		head.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		head.addKeyListener(this);
 		head.setFocusable(true);
-
+		field.setComponentZOrder(head, 6);	// Set the necessary priority for head
+		
 		Point initBodyLocation = new Point();
 		initBodyLocation.x = initHeadLocation.x;
 		initBodyLocation.y = initHeadLocation.y + AnyObject.defaultThickness;
@@ -138,6 +141,7 @@ class Snake implements KeyListener {
 		body.setBorder(border);
 		snakeBody.add(body);
 		field.add(body);
+		field.setComponentZOrder(body, 1);	// Set the necessary priority for body
 	}
 	
 	void move(Directions direction) {
@@ -207,11 +211,26 @@ class Snake implements KeyListener {
 			addSnakePart(tailLocation);
 			isFed = false;
 		}
-		if (field.findComponentAt(snakeBody.peek().getLocation()).getClass().equals(Food.class)) {
-			System.out.println(field.findComponentAt(snakeBody.peek().getLocation()));
+		actionAfterMove();
+	}
+	
+	void actionAfterMove() {
+		AnyObject head = snakeBody.peek();
+		Component componentUnderHead = field.findComponentAt(head.getLocation());
+		if (componentUnderHead.getClass().equals(Food.class)) {
 			isFed = true;
-			Food food = (Food)(field.findComponentAt(snakeBody.peek().getLocation()));
+			Food food = (Food) componentUnderHead;
 			food.makeFood(field);
+		} else if (componentUnderHead.getClass().equals(Barrier.class)) {
+			head.setFocusable(false);
+		} else if (componentUnderHead.getClass().equals(SnakeBody.class)) {
+			SnakeBody cuttedBody = (SnakeBody) componentUnderHead;
+			LinkedList<AnyObject> cuttedTail = new LinkedList<AnyObject>();
+			for (int i = snakeBody.indexOf(cuttedBody); i < snakeBody.size(); i++) {
+				field.remove(snakeBody.get(i));
+				cuttedTail.add(snakeBody.get(i));
+			}
+			snakeBody.removeAll(cuttedTail);
 		}
 	}
 
