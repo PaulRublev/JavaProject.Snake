@@ -161,24 +161,41 @@ class Food extends AnyObject {
 	
 }
 
+enum Directions {
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+}
+
 class Snake implements KeyListener {
 	
 	LinkedList<AnyObject> snakeBody = new LinkedList<AnyObject>();
 	Dimension bodySize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
 	Border border = BorderFactory.createLineBorder(Color.black, 1);
 	JComponent field;
+	Directions directions = Directions.UP;
 	
 	Snake(JComponent field) {
 		this.field = field;
 		Point initHeadLocation = new Point();
-		initHeadLocation.x = field.getWidth() / 2;
-		initHeadLocation.y = field.getHeight() / 2;
+		initHeadLocation.x = (field.getWidth() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
+		initHeadLocation.y = (field.getHeight() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
 		snakeBodyGrowth(initHeadLocation);
 		Point initBodyLocation = new Point();
 		initBodyLocation.x = initHeadLocation.x;
 		initBodyLocation.y = initHeadLocation.y + AnyObject.defaultThickness;
 		snakeBodyGrowth(initBodyLocation);
-		field.repaint();
+		
+		initBodyLocation.x = initHeadLocation.x;
+		initBodyLocation.y = initHeadLocation.y + 2 * AnyObject.defaultThickness;
+		snakeBodyGrowth(initBodyLocation);
+		
+		AnyObject head = snakeBody.peek();
+		head.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		head.addKeyListener(this);
+		head.setFocusable(true);
+		//field.repaint();
 	}
 	
 	void snakeBodyGrowth(Point location) {
@@ -189,15 +206,76 @@ class Snake implements KeyListener {
 		snakeBody.add(body);
 		field.add(body);
 	}
+	
+	void moving(Directions direction) {
+		AnyObject head = snakeBody.peek();
+		for (int i = snakeBody.size() - 1; i > 0; i--) {
+			snakeBody.get(i).setLocation(snakeBody.get(i - 1).getLocation());
+		}
+		switch (direction) {
+		case UP:
+			head.setLocation(head.getX(), head.getY() - AnyObject.defaultThickness);
+			break;
+		case DOWN:
+			head.setLocation(head.getX(), head.getY() + AnyObject.defaultThickness);
+			break;
+		case LEFT:
+			head.setLocation(head.getX() - AnyObject.defaultThickness, head.getY());
+			break;
+		case RIGHT:
+			head.setLocation(head.getX() + AnyObject.defaultThickness, head.getY());
+			break;
+		}
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
+		//System.out.println(e.getExtendedKeyCode());
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		//System.out.println(e.getExtendedKeyCode());
+		Directions wrongDirection = Directions.DOWN;
+		int dX = snakeBody.peek().getX() - snakeBody.get(1).getX();
+		int dY = snakeBody.peek().getY() - snakeBody.get(1).getY();
+		Point deltaPoint = new Point(dX, dY);
+		if (deltaPoint.equals(new Point(AnyObject.defaultThickness, 0))) {
+			wrongDirection = Directions.LEFT;
+		} else if (deltaPoint.equals(new Point(0, AnyObject.defaultThickness))) {
+			wrongDirection = Directions.UP;
+		} else if (deltaPoint.equals(new Point(-AnyObject.defaultThickness, 0))) {
+			wrongDirection = Directions.RIGHT;
+		} else if (deltaPoint.equals(new Point(0, -AnyObject.defaultThickness))) {
+			wrongDirection = Directions.DOWN;
+		}
+		switch (e.getExtendedKeyCode()) {
+		case 37:	// Left
+			if (!Directions.LEFT.equals(wrongDirection)) {
+				directions = Directions.LEFT;
+				moving(directions);
+			}
+			break;
+		case 38:	// Up
+			if (!Directions.UP.equals(wrongDirection)) {
+				directions = Directions.UP;
+				moving(directions);
+			}
+			break;
+		case 39:	// Right
+			if (!Directions.RIGHT.equals(wrongDirection)) {
+				directions = Directions.RIGHT;
+				moving(directions);
+			}
+			break;
+		case 40:	// Down
+			if (!Directions.DOWN.equals(wrongDirection)) {
+				directions = Directions.DOWN;
+				moving(directions);
+			}
+			break;
+		}
 	}
 
 	@Override
