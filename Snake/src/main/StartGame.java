@@ -161,9 +161,49 @@ class Food extends AnyObject {
 	
 }
 
-class Snake {
+class Snake implements KeyListener {
 	
+	LinkedList<AnyObject> snakeBody = new LinkedList<AnyObject>();
+	Dimension bodySize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
+	Border border = BorderFactory.createLineBorder(Color.black, 1);
+	JComponent field;
 	
+	Snake(JComponent field) {
+		this.field = field;
+		Point initHeadLocation = new Point();
+		initHeadLocation.x = field.getWidth() / 2;
+		initHeadLocation.y = field.getHeight() / 2;
+		snakeBodyGrowth(initHeadLocation);
+		Point initBodyLocation = new Point();
+		initBodyLocation.x = initHeadLocation.x;
+		initBodyLocation.y = initHeadLocation.y + AnyObject.defaultThickness;
+		snakeBodyGrowth(initBodyLocation);
+		field.repaint();
+	}
+	
+	void snakeBodyGrowth(Point location) {
+		AnyObject body = new AnyObject();
+		body.setLocation(location);
+		body.setSize(bodySize);
+		body.setBorder(border);
+		snakeBody.add(body);
+		field.add(body);
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+	}
 	
 }
 
@@ -176,6 +216,7 @@ class Field extends JComponent {
 		new Wall().makeWall(new Point(20, 20), new Dimension(10, 20), this);
 		Food food = new Food(this);
 		//food.makeFood(this);
+		Snake snake = new Snake(this);
 	}
 	
 }
