@@ -69,28 +69,20 @@ class Food extends AnyObject {
 	void makeFood(JComponent field) {
 		int x;
 		int y;
-		do {
+		do {	// Generate free random coordinates for food
 			x = ((int)(Math.random() * (field.getWidth() - 2 * AnyObject.defaultThickness) + AnyObject.defaultThickness) / 
 					AnyObject.defaultThickness) * AnyObject.defaultThickness;
 			y = ((int)(Math.random() * (field.getHeight() - 2 * AnyObject.defaultThickness) + AnyObject.defaultThickness) / 
 					AnyObject.defaultThickness) * AnyObject.defaultThickness;
-		} while (false);
-		//System.out.print(x + ", " + y);
-		Border border = BorderFactory.createLineBorder(Color.black, 2);
+		} while (!field.findComponentAt(new Point(x, y)).getClass().equals(field.getClass()));
+		Border foodBorder = BorderFactory.createLineBorder(Color.black, 2);
 		Point foodLocation = new Point(x, y);
 		Dimension foodSize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
-		setBorder(border);
+		setBorder(foodBorder);
 		setLocation(foodLocation);
 		setSize(foodSize);
 	}
 	
-}
-
-enum Directions {
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
 }
 
 class Snake implements KeyListener {
@@ -100,6 +92,12 @@ class Snake implements KeyListener {
 	}
 	class SnakeHead extends AnyObject {
 		
+	}
+	enum Directions {
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT
 	}
 	
 	LinkedList<AnyObject> snakeBody = new LinkedList<AnyObject>();
