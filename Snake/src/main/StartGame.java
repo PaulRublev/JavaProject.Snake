@@ -17,10 +17,14 @@ class AnyObject extends JLabel {
 
 class Wall {
 	
-	AnyObject upWall;
-	AnyObject downWall;
-	AnyObject leftWall;
-	AnyObject rightWall;
+	class Barrier extends AnyObject {
+		
+	}
+	
+	Barrier upWall;
+	Barrier downWall;
+	Barrier leftWall;
+	Barrier rightWall;
 	Border border = BorderFactory.createLineBorder(Color.black, 4);
 	
 	Wall() {
@@ -44,8 +48,8 @@ class Wall {
 		field.add(rightWall);
 	}
 
-	AnyObject makeWall(Point coordinates, Dimension dimension, JComponent field) {
-		AnyObject someWall = new AnyObject();
+	Barrier makeWall(Point coordinates, Dimension dimension, JComponent field) {
+		Barrier someWall = new Barrier();
 		someWall.setLocation(coordinates);
 		someWall.setSize(dimension);
 		someWall.setBorder(border);
@@ -91,35 +95,46 @@ enum Directions {
 
 class Snake implements KeyListener {
 	
+	class SnakeBody extends AnyObject {
+		
+	}
+	class SnakeHead extends AnyObject {
+		
+	}
+	
 	LinkedList<AnyObject> snakeBody = new LinkedList<AnyObject>();
 	Dimension bodySize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
 	Border border = BorderFactory.createLineBorder(Color.black, 1);
 	JComponent field;
 	Directions directions = Directions.UP;
+	boolean isFed = false;
 	
 	Snake(JComponent field) {
 		this.field = field;
 		Point initHeadLocation = new Point();
 		initHeadLocation.x = (field.getWidth() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
 		initHeadLocation.y = (field.getHeight() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
-		snakeBodyGrowth(initHeadLocation);
-		Point initBodyLocation = new Point();
-		initBodyLocation.x = initHeadLocation.x;
-		initBodyLocation.y = initHeadLocation.y + AnyObject.defaultThickness;
-		snakeBodyGrowth(initBodyLocation);
-		
-		initBodyLocation.x = initHeadLocation.x;
-		initBodyLocation.y = initHeadLocation.y + 2 * AnyObject.defaultThickness;
-		snakeBodyGrowth(initBodyLocation);
-		
+		addSnakePart(initHeadLocation);
 		AnyObject head = snakeBody.peek();
 		head.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		head.addKeyListener(this);
 		head.setFocusable(true);
+
+		Point initBodyLocation = new Point();
+		initBodyLocation.x = initHeadLocation.x;
+		initBodyLocation.y = initHeadLocation.y + AnyObject.defaultThickness;
+		addSnakePart(initBodyLocation);
+		initBodyLocation.x = initHeadLocation.x;
+		initBodyLocation.y = initHeadLocation.y + 2 * AnyObject.defaultThickness;
+		addSnakePart(initBodyLocation);
 	}
 	
-	void snakeBodyGrowth(Point location) {
-		AnyObject body = new AnyObject();
+	void addSnakePart(Point location) {
+		AnyObject body;
+		if (snakeBody.size() == 0) 
+			body = new SnakeHead();
+		else
+			body = new SnakeBody();
 		body.setLocation(location);
 		body.setSize(bodySize);
 		body.setBorder(border);
@@ -127,7 +142,7 @@ class Snake implements KeyListener {
 		field.add(body);
 	}
 	
-	void moving(Directions direction) {
+	void move(Directions direction) {
 		AnyObject head = snakeBody.peek();
 		for (int i = snakeBody.size() - 1; i > 0; i--) {
 			snakeBody.get(i).setLocation(snakeBody.get(i - 1).getLocation());
@@ -150,6 +165,7 @@ class Snake implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		Point tailLocation = new Point(snakeBody.peekLast().getLocation());
 		Directions wrongDirection = Directions.DOWN;
 		int dX = snakeBody.peek().getX() - snakeBody.get(1).getX();
 		int dY = snakeBody.peek().getY() - snakeBody.get(1).getY();
@@ -167,27 +183,37 @@ class Snake implements KeyListener {
 		case 37:	// Left
 			if (!Directions.LEFT.equals(wrongDirection)) {
 				directions = Directions.LEFT;
-				moving(directions);
+				move(directions);
 			}
 			break;
 		case 38:	// Up
 			if (!Directions.UP.equals(wrongDirection)) {
 				directions = Directions.UP;
-				moving(directions);
+				move(directions);
 			}
 			break;
 		case 39:	// Right
 			if (!Directions.RIGHT.equals(wrongDirection)) {
 				directions = Directions.RIGHT;
-				moving(directions);
+				move(directions);
 			}
 			break;
 		case 40:	// Down
 			if (!Directions.DOWN.equals(wrongDirection)) {
 				directions = Directions.DOWN;
-				moving(directions);
+				move(directions);
 			}
 			break;
+		}
+		if (isFed) {
+			addSnakePart(tailLocation);
+			isFed = false;
+		}
+		if (field.findComponentAt(snakeBody.peek().getLocation()).getClass().equals(Food.class)) {
+			System.out.println(field.findComponentAt(snakeBody.peek().getLocation()));
+			isFed = true;
+			Food food = (Food)(field.findComponentAt(snakeBody.peek().getLocation()));
+			food.makeFood(field);
 		}
 	}
 
