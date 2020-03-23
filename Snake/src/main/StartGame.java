@@ -1,92 +1,13 @@
 package main;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.EventObject;
 import java.util.LinkedList;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.Timer;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-
-
-
-//class SnakeBody extends AbstractObj {
-//	
-//	Point nextStepXY;
-//	
-//	SnakeBody(Point XY, Point nextStepXY) {
-//		super(XY);
-//		symbol = '*';
-//		empty = false;
-//		this.nextStepXY = nextStepXY;
-//	}
-//	
-//	void setNextStep(Point XY) {
-//		nextStepXY = XY;
-//	}
-//	
-//	Point getNextStep() {
-//		return nextStepXY;
-//	}
-//	
-//}
-//
-//class Snake implements Runnable {
-//	LinkedList<SnakeBody> snake = new LinkedList<SnakeBody>();
-//	AbstractObj[][] array;
-//	Thread thread = new Thread(this);
-//	
-//	Snake(AbstractObj[][] array) {
-//		this.array = array;
-//		Point centerPoint = new Point(array[0].length / 2, array.length / 2);
-//		snake.add(new SnakeBody(centerPoint, new Point(centerPoint.x, centerPoint.y - 1)));
-//		SnakeBody head = snake.element();
-//		head.symbol = 'H';
-//		snake.add(new SnakeBody(new Point(head.getX(), head.getY() + 1), head.getXY()));
-//		placingSnake();
-//		thread.start();
-//	}
-//	
-//	void placingSnake() {
-//		for (SnakeBody snakeBody : snake) {
-//			array[snakeBody.getY()][snakeBody.getX()] = snakeBody;
-//		}
-//	}
-//	
-//	@Override
-//	public void run() {
-//		do {
-//			try {
-//				thread.sleep(1000);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			array[snake.getLast().getY()][snake.getLast().getX()] = new AbstractObj(snake.getLast().getXY());
-//			for (int i = 0; i <= snake.size() - 1; i++) {
-//				SnakeBody body = snake.get(i);
-//				body.setXY(body.getNextStep());
-//				if (i != 0) {
-//					body.setNextStep(snake.get(i - 1).getXY());
-//				} else {
-//					body.setNextStep(new Point(body.getX(), body.getY() - 1));
-//				}
-//			}
-//			placingSnake();
-//		} while (true);
-//	}
-//	
-//}
 
 class AnyObject extends JLabel {
 	
@@ -195,7 +116,6 @@ class Snake implements KeyListener {
 		head.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		head.addKeyListener(this);
 		head.setFocusable(true);
-		//field.repaint();
 	}
 	
 	void snakeBodyGrowth(Point location) {
@@ -229,14 +149,7 @@ class Snake implements KeyListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		//System.out.println(e.getExtendedKeyCode());
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
-		//System.out.println(e.getExtendedKeyCode());
 		Directions wrongDirection = Directions.DOWN;
 		int dX = snakeBody.peek().getX() - snakeBody.get(1).getX();
 		int dY = snakeBody.peek().getY() - snakeBody.get(1).getY();
@@ -279,8 +192,13 @@ class Snake implements KeyListener {
 	}
 
 	@Override
+	public void keyTyped(KeyEvent e) {
+		//required by KeyListener interface
+	}
+
+	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		//required by KeyListener interface
 	}
 	
 }
@@ -293,7 +211,6 @@ class Field extends JComponent {
 		new Wall(this);
 		new Wall().makeWall(new Point(20, 20), new Dimension(10, 20), this);
 		Food food = new Food(this);
-		//food.makeFood(this);
 		Snake snake = new Snake(this);
 	}
 	
