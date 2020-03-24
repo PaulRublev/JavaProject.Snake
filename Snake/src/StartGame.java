@@ -1,6 +1,7 @@
 
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
@@ -12,6 +13,7 @@ import javax.swing.border.Border;
 
 class AnyObject extends JLabel {
 	
+	private static final long serialVersionUID = 1L;
 	final static int defaultThickness = 10;
 	
 }
@@ -19,14 +21,14 @@ class AnyObject extends JLabel {
 class Wall {
 	
 	class Barrier extends AnyObject {
-		
+		private static final long serialVersionUID = 1L;
 	}
 	
 	Barrier upWall;
 	Barrier downWall;
 	Barrier leftWall;
 	Barrier rightWall;
-	Border border = BorderFactory.createLineBorder(Color.black, 4);
+	Border 	border = BorderFactory.createLineBorder(Color.black, 4);
 	
 	Wall() {
 		
@@ -62,6 +64,8 @@ class Wall {
 
 class Food extends AnyObject {
 	
+	private static final long serialVersionUID = 1L;
+	
 	Food(JComponent field) {
 		makeFood(field);
 		field.add(this);
@@ -86,13 +90,13 @@ class Food extends AnyObject {
 	
 }
 
-class Snake implements KeyListener {
+class Snake extends KeyAdapter implements KeyListener {
 	
 	class SnakeBody extends AnyObject {
-		
+		private static final long serialVersionUID = 1L;
 	}
 	class SnakeHead extends AnyObject {
-		
+		private static final long serialVersionUID = 1L;
 	}
 	enum Directions {
 		UP,
@@ -102,14 +106,15 @@ class Snake implements KeyListener {
 	}
 	
 	LinkedList<AnyObject> snakeBody = new LinkedList<AnyObject>();
-	Dimension bodySize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
-	Border border = BorderFactory.createLineBorder(Color.black, 1);
-	JComponent field;
-	Directions directions = Directions.UP;
-	boolean isFed = false;
+	Dimension	bodySize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
+	Border		border = BorderFactory.createLineBorder(Color.black, 1);
+	JComponent 	field;
+	Directions 	directions = Directions.UP;
+	boolean 	isFed = false;
 	
 	Snake(JComponent field) {
 		this.field = field;
+		
 		Point initHeadLocation = new Point();
 		initHeadLocation.x = (field.getWidth() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
 		initHeadLocation.y = (field.getHeight() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
@@ -131,10 +136,11 @@ class Snake implements KeyListener {
 	
 	void addSnakePart(Point location) {
 		AnyObject body;
-		if (snakeBody.size() == 0) 
+		if (snakeBody.size() == 0) {
 			body = new SnakeHead();
-		else
+		} else {
 			body = new SnakeBody();
+		}
 		body.setLocation(location);
 		body.setSize(bodySize);
 		body.setBorder(border);
@@ -144,10 +150,11 @@ class Snake implements KeyListener {
 	}
 	
 	void move(Directions direction) {
-		AnyObject head = snakeBody.peek();
 		for (int i = snakeBody.size() - 1; i > 0; i--) {
 			snakeBody.get(i).setLocation(snakeBody.get(i - 1).getLocation());
 		}
+		
+		AnyObject head = snakeBody.peek();
 		switch (direction) {
 		case UP:
 			head.setLocation(head.getX(), head.getY() - AnyObject.defaultThickness);
@@ -167,6 +174,7 @@ class Snake implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		Point tailLocation = new Point(snakeBody.peekLast().getLocation());
+		
 		Directions wrongDirection = Directions.DOWN;
 		int dX = snakeBody.peek().getX() - snakeBody.get(1).getX();
 		int dY = snakeBody.peek().getY() - snakeBody.get(1).getY();
@@ -180,6 +188,7 @@ class Snake implements KeyListener {
 		} else if (deltaPoint.equals(new Point(0, -AnyObject.defaultThickness))) {
 			wrongDirection = Directions.DOWN;
 		}
+		
 		switch (e.getExtendedKeyCode()) {
 		case 37:	// Left
 			if (!Directions.LEFT.equals(wrongDirection)) {
@@ -206,10 +215,12 @@ class Snake implements KeyListener {
 			}
 			break;
 		}
+		
 		if (isFed) {
 			addSnakePart(tailLocation);
 			isFed = false;
 		}
+		
 		actionAfterMove();
 	}
 	
@@ -232,24 +243,17 @@ class Snake implements KeyListener {
 			snakeBody.removeAll(cuttedTail);
 		}
 	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		//required by KeyListener interface
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		//required by KeyListener interface
-	}
 	
 }
 
 class Field extends JComponent {
 	
+	private static final long serialVersionUID = 1L;
+	
 	Field(int width, int height) {
 		setSize(width, height);
 		setLayout(null);
+		
 		new Wall(this);
 		new Wall().makeWall(new Point(20, 20), new Dimension(10, 20), this);
 		Food food = new Food(this);
@@ -260,6 +264,7 @@ class Field extends JComponent {
 
 class Frame extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
 	private int frameWidth = 450;
 	private int frameHeight = 400;
 	private int frameLocationX = 300;
@@ -272,7 +277,7 @@ class Frame extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 		setResizable(false);
-		setVisible(true);
+		
 		Field field = new Field(fieldWidth, fieldHeight);
 		add(field);
 		repaint();
@@ -284,7 +289,14 @@ class Frame extends JFrame {
 public class StartGame {
 	
 	public static void main(String[] args) {
-		Frame frame = new Frame();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JFrame.setDefaultLookAndFeelDecorated(true);
+				Frame frame = new Frame();
+				frame.setTitle("Snake");
+				frame.setVisible(true);
+			}
+		});
 	}
 	
 }
