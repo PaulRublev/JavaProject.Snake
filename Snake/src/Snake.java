@@ -1,18 +1,14 @@
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-public class Snake extends KeyAdapter implements KeyListener {
+class Snake extends KeyAdapter implements KeyListener {
 	
 	class SnakeBody extends AnyObject {
 		private static final long serialVersionUID = 1L;

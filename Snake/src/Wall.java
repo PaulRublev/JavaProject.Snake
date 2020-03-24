@@ -6,7 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.border.Border;
 
-public class Wall {
+class Wall {
 	
 	class Barrier extends AnyObject {
 		private static final long serialVersionUID = 1L;
