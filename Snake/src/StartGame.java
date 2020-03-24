@@ -275,6 +275,7 @@ class Frame extends JFrame {
 		setVisible(true);
 		Field field = new Field(fieldWidth, fieldHeight);
 		add(field);
+		repaint();
 	}
 	
 }
