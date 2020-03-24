@@ -1,4 +1,4 @@
-package main;
+
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
-import main.Wall.Barrier;
 
 class AnyObject extends JLabel {
 	
@@ -221,7 +220,7 @@ class Snake implements KeyListener {
 			isFed = true;
 			Food food = (Food) componentUnderHead;
 			food.makeFood(field);
-		} else if (componentUnderHead.getClass().equals(Barrier.class)) {
+		} else if (componentUnderHead.getClass().equals(Wall.Barrier.class)) {
 			head.setFocusable(false);
 		} else if (componentUnderHead.getClass().equals(SnakeBody.class)) {
 			SnakeBody cuttedBody = (SnakeBody) componentUnderHead;
