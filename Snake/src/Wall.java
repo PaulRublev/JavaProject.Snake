@@ -16,7 +16,7 @@ class Wall {
 	Barrier downWall;
 	Barrier leftWall;
 	Barrier rightWall;
-	Border 	border = BorderFactory.createLineBorder(Color.black, 4);
+	Border 	border = BorderFactory.createLineBorder(Color.black, 5);
 	
 	Wall() {
 		

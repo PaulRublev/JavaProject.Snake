@@ -6,15 +6,22 @@ import java.util.LinkedList;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 
 class Snake extends KeyAdapter implements KeyListener {
 	
 	class SnakeBody extends AnyObject {
 		private static final long serialVersionUID = 1L;
+		
+		SnakeBody() {
+			setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		}
 	}
 	class SnakeHead extends AnyObject {
 		private static final long serialVersionUID = 1L;
+		
+		public SnakeHead() {
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		}
 	}
 	enum Directions {
 		UP,
@@ -23,22 +30,29 @@ class Snake extends KeyAdapter implements KeyListener {
 		RIGHT
 	}
 	
-	LinkedList<AnyObject> snakeBody = new LinkedList<AnyObject>();
+	LinkedList<AnyObject> snakeBody;
 	Dimension	bodySize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
-	Border		border = BorderFactory.createLineBorder(Color.black, 1);
 	JComponent 	field;
 	Directions 	directions = Directions.UP;
 	boolean 	isFed = false;
 	
+	Snake(JComponent field, Point initCoordinates) {
+		this.field = field;
+		snakeBody = new LinkedList<AnyObject>();
+		
+		for (int i = 0; i < 3; i++) {
+			addSnakePart(new Point(initCoordinates.x + AnyObject.defaultThickness * i, initCoordinates.y));
+		}
+	}
 	Snake(JComponent field) {
 		this.field = field;
+		snakeBody = new LinkedList<AnyObject>();
 		
 		Point initHeadLocation = new Point();
 		initHeadLocation.x = (field.getWidth() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
 		initHeadLocation.y = (field.getHeight() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
 		addSnakePart(initHeadLocation);
 		AnyObject head = snakeBody.peek();
-		head.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		head.addKeyListener(this);
 		head.setFocusable(true);
 		field.setComponentZOrder(head, 6);	// Set the necessary priority for head
@@ -61,7 +75,7 @@ class Snake extends KeyAdapter implements KeyListener {
 		}
 		body.setLocation(location);
 		body.setSize(bodySize);
-		body.setBorder(border);
+		//body.setBorder(border);
 		snakeBody.add(body);
 		field.add(body);
 		field.setComponentZOrder(body, 1);	// Set the necessary priority for body
@@ -148,7 +162,7 @@ class Snake extends KeyAdapter implements KeyListener {
 		if (componentUnderHead.getClass().equals(Food.class)) {
 			isFed = true;
 			Food food = (Food) componentUnderHead;
-			food.makeFood(field);
+			food.makeFood(food.generateCoordinates(field));
 		} else if (componentUnderHead.getClass().equals(Wall.Barrier.class)) {
 			head.setFocusable(false);
 		} else if (componentUnderHead.getClass().equals(SnakeBody.class)) {

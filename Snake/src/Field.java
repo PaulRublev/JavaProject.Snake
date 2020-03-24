@@ -7,8 +7,9 @@ class Field extends JComponent {
 	
 	private static final long serialVersionUID = 1L;
 	
-	Field(int width, int height) {
+	Field(int x, int y, int width, int height) {
 		setSize(width, height);
+		setLocation(x, y);
 		setLayout(null);
 		
 		new Wall(this);
