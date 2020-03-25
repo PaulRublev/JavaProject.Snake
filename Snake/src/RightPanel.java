@@ -1,14 +1,23 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 
-public class RightPanel extends JPanel {
+interface ScoreListener {
+	void refreshScore(int score);
+}
+
+public class RightPanel extends JPanel implements ScoreListener {
 
 	private static final long serialVersionUID = 1L;
+	private JLabel scoreLabel;
+	private int initialScore = 0;
 	
 	RightPanel(int x, int y, int width, int height) {
 		setSize(width, height);
@@ -33,6 +42,21 @@ public class RightPanel extends JPanel {
 		JLabel explanationLabelSnake = new JLabel("Snake");
 		explanationLabelSnake.setBounds(20, 110, 60, 20);
 		add(explanationLabelSnake);
+		
+		JLabel explanationLabelScore = new JLabel("Score:");
+		explanationLabelScore.setBounds(20, 150, 60, 20);
+		explanationLabelScore.setHorizontalAlignment(SwingConstants.CENTER);
+		add(explanationLabelScore);
+		
+		scoreLabel = new JLabel(String.valueOf(initialScore), SwingConstants.CENTER);
+		scoreLabel.setBounds(20, 170, 60, 40);
+		scoreLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+		add(scoreLabel);
+	}
+	
+	public void refreshScore(int score) {
+		scoreLabel.setText(String.valueOf(score));
 	}
 	
 }

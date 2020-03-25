@@ -1,4 +1,5 @@
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 class Frame extends JFrame {
 	
@@ -15,6 +16,8 @@ class Frame extends JFrame {
 	private int rightPanelHeight = 350;
 	private int rightPanelX = fieldX + fieldWidth + 5;
 	private int rightPanelY = 10;
+	RightPanel 	panel;
+	Field 		field;
 	
 	Frame() {
 		setBounds(frameLocationX, frameLocationY, frameWidth, frameHeight);
@@ -22,11 +25,12 @@ class Frame extends JFrame {
 		setLayout(null);
 		setResizable(false);
 		
-		Field field = new Field(fieldX, fieldY, fieldWidth, fieldHeight);
+		panel = new RightPanel(rightPanelX, rightPanelY, rightPanelWidth, rightPanelHeight);
+		add(panel);
+		
+		field = new Field(fieldX, fieldY, fieldWidth, fieldHeight, panel);
 		add(field);
 		
-		RightPanel panel = new RightPanel(rightPanelX, rightPanelY, rightPanelWidth, rightPanelHeight);
-		add(panel);
 		repaint();
 	}
 	

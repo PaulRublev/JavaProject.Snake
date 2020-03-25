@@ -30,11 +30,13 @@ class Snake extends KeyAdapter implements KeyListener {
 		RIGHT
 	}
 	
+	ScoreListener scoreListener;
 	LinkedList<AnyObject> snakeBody;
 	Dimension	bodySize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
 	JComponent 	field;
 	Directions 	directions = Directions.UP;
 	boolean 	isFed = false;
+	int maxSnakeLenght = 3;
 	
 	Snake(JComponent field, Point initCoordinates) {
 		this.field = field;
@@ -44,7 +46,8 @@ class Snake extends KeyAdapter implements KeyListener {
 			addSnakePart(new Point(initCoordinates.x + AnyObject.defaultThickness * i, initCoordinates.y));
 		}
 	}
-	Snake(JComponent field) {
+	Snake(JComponent field, ScoreListener scoreListener) {
+		this.scoreListener = scoreListener;
 		this.field = field;
 		snakeBody = new LinkedList<AnyObject>();
 		
@@ -75,7 +78,6 @@ class Snake extends KeyAdapter implements KeyListener {
 		}
 		body.setLocation(location);
 		body.setSize(bodySize);
-		//body.setBorder(border);
 		snakeBody.add(body);
 		field.add(body);
 		field.setComponentZOrder(body, 1);	// Set the necessary priority for body
@@ -151,6 +153,11 @@ class Snake extends KeyAdapter implements KeyListener {
 		if (isFed) {
 			addSnakePart(tailLocation);
 			isFed = false;
+		}
+		
+		if (scoreListener != null && maxSnakeLenght < snakeBody.size()) {
+			maxSnakeLenght = snakeBody.size();
+			scoreListener.refreshScore(maxSnakeLenght - 3);
 		}
 		
 		actionAfterMove();
