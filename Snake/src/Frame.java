@@ -1,10 +1,9 @@
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 class Frame extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private int frameWidth = 550;
+	private int frameWidth = 535;
 	private int frameHeight = 400;
 	private int frameLocationX = 300;
 	private int frameLocationY = 300;
