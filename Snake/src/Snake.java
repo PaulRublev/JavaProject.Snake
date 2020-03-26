@@ -33,20 +33,20 @@ class Snake extends KeyAdapter implements KeyListener {
 	ScoreListener scoreListener;
 	LinkedList<AnyObject> snakeBody;
 	Dimension	bodySize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
-	JComponent 	field;
+	Field	 	field;
 	Directions 	directions = Directions.UP;
 	boolean 	isFed = false;
 	int maxSnakeLenght = 3;
 	
 	Snake(JComponent field, Point initCoordinates) {
-		this.field = field;
+		this.field = (Field) field;
 		snakeBody = new LinkedList<AnyObject>();
 		
 		for (int i = 0; i < 3; i++) {
 			addSnakePart(new Point(initCoordinates.x + AnyObject.defaultThickness * i, initCoordinates.y));
 		}
 	}
-	Snake(JComponent field, ScoreListener scoreListener) {
+	Snake(Field field, ScoreListener scoreListener) {
 		this.scoreListener = scoreListener;
 		this.field = field;
 		snakeBody = new LinkedList<AnyObject>();
@@ -169,8 +169,8 @@ class Snake extends KeyAdapter implements KeyListener {
 		if (componentUnderHead.getClass().equals(Food.class)) {
 			isFed = true;
 			Food food = (Food) componentUnderHead;
-			food.makeFood(food.generateCoordinates(field));
-		} else if (componentUnderHead.getClass().equals(Wall.Barrier.class)) {
+			food.makeFood(field.generateCoordinates());
+		} else if (componentUnderHead.getClass().equals(Wall.class)) {
 			head.setFocusable(false);
 		} else if (componentUnderHead.getClass().equals(SnakeBody.class)) {
 			SnakeBody cuttedBody = (SnakeBody) componentUnderHead;

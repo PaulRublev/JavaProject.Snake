@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
@@ -19,34 +18,33 @@ public class RightPanel extends JPanel implements ScoreListener {
 	private JLabel scoreLabel;
 	private int initialScore = 0;
 	
-	RightPanel(int x, int y, int width, int height) {
-		setSize(width, height);
-		setLocation(x, y);
-		setFocusable(false);
-		setLayout(null);
-		setBorder(BorderFactory.createLineBorder(Color.black, 1));
-		setVisible(true);
+	RightPanel() {
 		
-		new Wall().makeWall(new Point(20, 20), new Dimension(2 * AnyObject.defaultThickness,
-				AnyObject.defaultThickness), this);
-		JLabel explanationLabelWall = new JLabel("Wall");
-		explanationLabelWall.setBounds(20, 30, 60, 20);
-		add(explanationLabelWall);
+		Wall wallExample = new Wall(new Point(20, 20), 
+				new Dimension(2 * AnyObject.defaultThickness, AnyObject.defaultThickness));
+		add(wallExample);
 		
-		new Food(this, new Point(20, 60));
-		JLabel explanationLabelFood = new JLabel("Food");
-		explanationLabelFood.setBounds(20, 70, 60, 20);
-		add(explanationLabelFood);
+		JLabel wallExplanationLabel = new JLabel("Wall");
+		wallExplanationLabel.setBounds(20, 30, 60, 20);
+		add(wallExplanationLabel);
 		
-		new Snake(this, new Point(20, 100));
-		JLabel explanationLabelSnake = new JLabel("Snake");
-		explanationLabelSnake.setBounds(20, 110, 60, 20);
-		add(explanationLabelSnake);
+		Food foodExample = new Food(new Point(20, 60));
+		add(foodExample);
 		
-		JLabel explanationLabelScore = new JLabel("Score:");
-		explanationLabelScore.setBounds(20, 150, 60, 20);
-		explanationLabelScore.setHorizontalAlignment(SwingConstants.CENTER);
-		add(explanationLabelScore);
+		JLabel foodExplanationLabel = new JLabel("Food");
+		foodExplanationLabel.setBounds(20, 70, 60, 20);
+		add(foodExplanationLabel);
+		
+		//new Snake(this, new Point(20, 100));
+		
+		JLabel snakeExplanationLabel = new JLabel("Snake");
+		snakeExplanationLabel.setBounds(20, 110, 60, 20);
+		add(snakeExplanationLabel);
+		
+		JLabel scoreExplanationLabel = new JLabel("Score:");
+		scoreExplanationLabel.setBounds(20, 150, 60, 20);
+		scoreExplanationLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		add(scoreExplanationLabel);
 		
 		scoreLabel = new JLabel(String.valueOf(initialScore), SwingConstants.CENTER);
 		scoreLabel.setBounds(20, 170, 60, 40);

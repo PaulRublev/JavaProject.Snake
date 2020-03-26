@@ -1,3 +1,6 @@
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 
 class Frame extends JFrame {
@@ -24,10 +27,19 @@ class Frame extends JFrame {
 		setLayout(null);
 		setResizable(false);
 		
-		panel = new RightPanel(rightPanelX, rightPanelY, rightPanelWidth, rightPanelHeight);
+		panel = new RightPanel();
+		panel.setSize(rightPanelWidth, rightPanelHeight);
+		panel.setLocation(rightPanelX, rightPanelY);
+		panel.setLayout(null);
+		panel.setFocusable(false);
+		panel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		//panel.setVisible(true);
 		add(panel);
 		
-		field = new Field(fieldX, fieldY, fieldWidth, fieldHeight, panel);
+		field = new Field(fieldWidth, fieldHeight, panel);
+		//field.setSize(fieldWidth, fieldHeight);
+		field.setLocation(fieldX, fieldY);
+		field.setLayout(null);
 		add(field);
 		
 		repaint();
