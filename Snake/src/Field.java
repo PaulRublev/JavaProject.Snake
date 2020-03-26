@@ -19,14 +19,21 @@ class Field extends JComponent {
 	
 	Field(int width, int height, ScoreListener scoreListener) {
 		setSize(width, height);
-		
+		setWallsAround();
+		setRandomWalls();
+		//snake = new Snake(scoreListener);
+		food = new Food(generateCoordinates());
+		add(food);
+	}
+	
+	void setWallsAround() {
 		Point upWallCoordinates = new Point(0, 0);
-		Dimension upNDownWallSize = new Dimension(width, AnyObject.defaultThickness);
-		Point downWallCoordinates = new Point(0, height - AnyObject.defaultThickness);
+		Dimension upNDownWallSize = new Dimension(getWidth(), AnyObject.defaultThickness);
+		Point downWallCoordinates = new Point(0, getHeight() - AnyObject.defaultThickness);
 		Point leftWallCoordinates = new Point(0, AnyObject.defaultThickness);
 		Dimension leftNRightWallSize = new Dimension(AnyObject.defaultThickness,
-				height - 2 * AnyObject.defaultThickness);
-		Point rightWallCoordinates = new Point(width - AnyObject.defaultThickness, AnyObject.defaultThickness);
+				getHeight() - 2 * AnyObject.defaultThickness);
+		Point rightWallCoordinates = new Point(getWidth() - AnyObject.defaultThickness, AnyObject.defaultThickness);
 		
 		upWall = new Wall(upWallCoordinates, upNDownWallSize);
 		add(upWall);
@@ -36,14 +43,16 @@ class Field extends JComponent {
 		add(leftWall);
 		rightWall = new Wall(rightWallCoordinates, leftNRightWallSize);
 		add(rightWall);
-		
+	}
+	
+	void setRandomWalls() {
 		Wall randomWall;
 		Dimension randomWallSize;
 		Point randomWallCoordinates;
-		int leftX = (getWidth() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
-		int upY = (getHeight() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
-		int rightX = leftX;
-		int downY = upY + 3;
+		int snakeLeftX = (getWidth() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
+		int snakeUpY = (getHeight() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
+		int snakeRightX = snakeLeftX;
+		int snakeDownY = snakeUpY + 3;
 		int wallLeftX;
 		int wallUpY;
 		int wallRightX;
@@ -60,25 +69,22 @@ class Field extends JComponent {
 				wallUpY = randomWallCoordinates.y;
 				wallRightX = randomWallCoordinates.x + randomWallSize.width;
 				wallDownY = randomWallCoordinates.y + randomWallSize.height;
-				if (wallLeftX <= rightX && wallLeftX >= leftX 
-						|| wallRightX <= rightX && wallRightX >= leftX
-						|| wallLeftX <= leftX && wallRightX >= rightX) {
+				if (wallLeftX <= snakeRightX && wallLeftX >= snakeLeftX 
+						|| wallRightX <= snakeRightX && wallRightX >= snakeLeftX
+						|| wallLeftX <= snakeLeftX && wallRightX >= snakeRightX) {
 					crossedX = true;
 				}
-				if (wallUpY <= downY && wallUpY >= upY 
-						|| wallDownY <= downY && wallDownY >= upY
-						|| wallUpY <= upY && wallDownY >= downY) {
+				if (wallUpY <= snakeDownY && wallUpY >= snakeUpY 
+						|| wallDownY <= snakeDownY && wallDownY >= snakeUpY
+						|| wallUpY <= snakeUpY && wallDownY >= snakeDownY) {
 					crossedY = true;
 				}
-			} while (randomWallCoordinates.x + randomWallSize.width > width ||
-					randomWallCoordinates.y + randomWallSize.height > height ||
+			} while (randomWallCoordinates.x + randomWallSize.width > getWidth() ||
+					randomWallCoordinates.y + randomWallSize.height > getHeight() ||
 					crossedX && crossedY);
 			randomWall = new Wall(randomWallCoordinates, randomWallSize);
 			add(randomWall);
 		}
-		//snake = new Snake(this, scoreListener);
-		food = new Food(generateCoordinates());
-		add(food);
 	}
 	
 	Point generateCoordinates() {
