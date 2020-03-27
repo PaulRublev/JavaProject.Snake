@@ -108,6 +108,7 @@ class Field extends JComponent implements MoveListener {
 			food.makeFood(generateCoordinates());
 		} else if (componentUnderHead.getClass().equals(Wall.class)) {
 			setFocusable(false);
+			scoreListener.saveMaxScore();
 		} else if (componentUnderHead.getClass().equals(Snake.SnakeBody.class)) {
 			Snake.SnakeBody cuttedBody = (Snake.SnakeBody) componentUnderHead;
 			LinkedList<AnyObject> cuttedTail = new LinkedList<AnyObject>();

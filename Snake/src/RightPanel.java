@@ -10,13 +10,17 @@ import javax.swing.border.BevelBorder;
 
 interface ScoreListener {
 	void refreshScore(int score);
+	void saveMaxScore();
 }
 
 class RightPanel extends JPanel implements ScoreListener {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel scoreLabel;
+	private JLabel maxScoreLabel;
 	private int initialScore = 0;
+	private int maxScore = 0;
+	private int currentScore = 0;
 	
 	RightPanel() {
 		
@@ -54,10 +58,29 @@ class RightPanel extends JPanel implements ScoreListener {
 		scoreLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
 		add(scoreLabel);
+		
+		JLabel maxScoreExplanationLabel = new JLabel("Record:");
+		maxScoreExplanationLabel.setBounds(20, 210, 60, 20);
+		maxScoreExplanationLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		add(maxScoreExplanationLabel);
+		
+		maxScoreLabel = new JLabel(String.valueOf(maxScore), SwingConstants.CENTER);
+		maxScoreLabel.setBounds(20, 230, 60, 40);
+		maxScoreLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		maxScoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
+		add(maxScoreLabel);
 	}
 	
 	public void refreshScore(int score) {
+		this.currentScore = score;
 		scoreLabel.setText(String.valueOf(score));
+	}
+	
+	public void saveMaxScore() {
+		if (currentScore > maxScore) {
+			maxScore = currentScore;
+			maxScoreLabel.setText(String.valueOf(maxScore));
+		}
 	}
 	
 }
