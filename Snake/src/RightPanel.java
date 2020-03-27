@@ -1,8 +1,10 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -15,6 +17,7 @@ interface ScoreListener {
 
 class RightPanel extends JPanel implements ScoreListener {
 
+	public JButton resetButton;
 	private static final long serialVersionUID = 1L;
 	private JLabel scoreLabel;
 	private JLabel maxScoreLabel;
@@ -69,6 +72,15 @@ class RightPanel extends JPanel implements ScoreListener {
 		maxScoreLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		maxScoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
 		add(maxScoreLabel);
+		
+		resetButton = new JButton("RESET");
+		resetButton.setBounds(20, 290, 60, 40);
+		resetButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 8));
+		resetButton.setFocusable(false);
+		resetButton.setOpaque(true);
+		resetButton.setBackground(Color.DARK_GRAY);
+		resetButton.setForeground(Color.WHITE);
+		add(resetButton);
 	}
 	
 	public void refreshScore(int score) {
