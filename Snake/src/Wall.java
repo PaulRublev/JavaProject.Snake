@@ -5,7 +5,7 @@ import java.awt.Point;
 class Wall extends AnyObject {
 	
 	private static final long serialVersionUID = 1L;
-	Color color = Color.BLACK;
+	private Color color = Color.BLACK;
 	
 	Wall(Point coordinates, Dimension size) {
 		setLocation(coordinates);

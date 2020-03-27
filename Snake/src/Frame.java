@@ -18,8 +18,8 @@ class Frame extends JFrame {
 	private int rightPanelHeight = 350;
 	private int rightPanelX = fieldX + fieldWidth + 5;
 	private int rightPanelY = 10;
-	RightPanel 	panel;
-	Field 		field;
+	private RightPanel panel;
+	private Field field;
 	
 	Frame() {
 		setBounds(frameLocationX, frameLocationY, frameWidth, frameHeight);
@@ -33,11 +33,9 @@ class Frame extends JFrame {
 		panel.setLayout(null);
 		panel.setFocusable(false);
 		panel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-		//panel.setVisible(true);
 		add(panel);
 		
 		field = new Field(fieldWidth, fieldHeight, panel);
-		//field.setSize(fieldWidth, fieldHeight);
 		field.setLocation(fieldX, fieldY);
 		field.setLayout(null);
 		add(field);

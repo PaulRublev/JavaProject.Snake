@@ -13,7 +13,7 @@ class Food extends AnyObject {
 		makeFood(coordinates);
 	}
 	
-	void makeFood(Point coordinates) {
+	public void makeFood(Point coordinates) {
 		Border foodBorder = BorderFactory.createLineBorder(Color.black, 2);
 		Point foodLocation = coordinates;
 		Dimension foodSize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);

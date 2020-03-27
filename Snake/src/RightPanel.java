@@ -12,7 +12,7 @@ interface ScoreListener {
 	void refreshScore(int score);
 }
 
-public class RightPanel extends JPanel implements ScoreListener {
+class RightPanel extends JPanel implements ScoreListener {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel scoreLabel;
@@ -35,7 +35,10 @@ public class RightPanel extends JPanel implements ScoreListener {
 		foodExplanationLabel.setBounds(20, 70, 60, 20);
 		add(foodExplanationLabel);
 		
-		//new Snake(this, new Point(20, 100));
+		Snake snakeExample = new Snake(new Point(20, 100), Directions.RIGHT);
+		for (AnyObject snakeParts : snakeExample.snakeBody) {
+			add(snakeParts);
+		}
 		
 		JLabel snakeExplanationLabel = new JLabel("Snake");
 		snakeExplanationLabel.setBounds(20, 110, 60, 20);
