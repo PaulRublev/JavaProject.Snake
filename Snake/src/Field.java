@@ -12,18 +12,18 @@ interface MoveListener {
 class Field extends JComponent implements MoveListener {
 	
 	private static final long serialVersionUID = 1L;
-	int maxRandomWallsQuantity = 5;
-	int minRandomWallsQuantity = 2;
-	int maxRandomWallSize = 4;
-	int minRandomWallSize = 1;
-	Wall upWall;
-	Wall downWall;
-	Wall leftWall;
-	Wall rightWall;
-	Food food;
-	Snake snake;
-	int maxSnakeLenght;
-	ScoreListener scoreListener;
+	private int maxRandomWallsQuantity = 5;
+	private int minRandomWallsQuantity = 2;
+	private int maxRandomWallSize = 4;
+	private int minRandomWallSize = 1;
+	private Wall upWall;
+	private Wall downWall;
+	private Wall leftWall;
+	private Wall rightWall;
+	private Food food;
+	private Snake snake;
+	private int maxSnakeLenght;
+	private ScoreListener scoreListener;
 	
 	Field(int width, int height, ScoreListener scoreListener) {
 		this.scoreListener = scoreListener;
@@ -108,6 +108,7 @@ class Field extends JComponent implements MoveListener {
 			food.makeFood(generateCoordinates());
 		} else if (componentUnderHead.getClass().equals(Wall.class)) {
 			setFocusable(false);
+			scoreListener.saveMaxScore();
 		} else if (componentUnderHead.getClass().equals(Snake.SnakeBody.class)) {
 			Snake.SnakeBody cuttedBody = (Snake.SnakeBody) componentUnderHead;
 			LinkedList<AnyObject> cuttedTail = new LinkedList<AnyObject>();
@@ -157,6 +158,8 @@ class Field extends JComponent implements MoveListener {
 		for (int i = 0; i < randomWallsQuantity; i++) {
 			randomWallSize = generateSize();
 			do {
+				crossedX = false;
+				crossedY = false;
 				randomWallCoordinates = generateCoordinates();
 				wallLeftX = randomWallCoordinates.x;
 				wallUpY = randomWallCoordinates.y;

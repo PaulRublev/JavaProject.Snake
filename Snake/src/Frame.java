@@ -1,9 +1,11 @@
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 
-class Frame extends JFrame {
+class Frame extends JFrame implements ActionListener{
 	
 	private static final long serialVersionUID = 1L;
 	private int frameWidth = 535;
@@ -33,14 +35,28 @@ class Frame extends JFrame {
 		panel.setLayout(null);
 		panel.setFocusable(false);
 		panel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		panel.resetButton.addActionListener(this);
 		add(panel);
 		
-		field = new Field(fieldWidth, fieldHeight, panel);
+		field = makeField();
+		add(field);
+	}
+	
+	private Field makeField() {
+		Field field = new Field(fieldWidth, fieldHeight, panel);
 		field.setLocation(fieldX, fieldY);
 		field.setLayout(null);
+		return field;
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		panel.saveMaxScore();
+		panel.refreshScore(0);
+		remove(field);
+		field = makeField();
 		add(field);
-		
 		repaint();
+		field.requestFocusInWindow();
 	}
 	
 }

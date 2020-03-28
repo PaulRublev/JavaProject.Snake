@@ -1,8 +1,10 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -10,13 +12,18 @@ import javax.swing.border.BevelBorder;
 
 interface ScoreListener {
 	void refreshScore(int score);
+	void saveMaxScore();
 }
 
 class RightPanel extends JPanel implements ScoreListener {
 
+	public JButton resetButton;
 	private static final long serialVersionUID = 1L;
 	private JLabel scoreLabel;
+	private JLabel maxScoreLabel;
 	private int initialScore = 0;
+	private int maxScore = 0;
+	private int currentScore = 0;
 	
 	RightPanel() {
 		
@@ -54,10 +61,38 @@ class RightPanel extends JPanel implements ScoreListener {
 		scoreLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
 		add(scoreLabel);
+		
+		JLabel maxScoreExplanationLabel = new JLabel("Record:");
+		maxScoreExplanationLabel.setBounds(20, 210, 60, 20);
+		maxScoreExplanationLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		add(maxScoreExplanationLabel);
+		
+		maxScoreLabel = new JLabel(String.valueOf(maxScore), SwingConstants.CENTER);
+		maxScoreLabel.setBounds(20, 230, 60, 40);
+		maxScoreLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		maxScoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
+		add(maxScoreLabel);
+		
+		resetButton = new JButton("RESET");
+		resetButton.setBounds(20, 290, 60, 40);
+		resetButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 8));
+		resetButton.setFocusable(false);
+		resetButton.setOpaque(true);
+		resetButton.setBackground(Color.DARK_GRAY);
+		resetButton.setForeground(Color.WHITE);
+		add(resetButton);
 	}
 	
 	public void refreshScore(int score) {
+		this.currentScore = score;
 		scoreLabel.setText(String.valueOf(score));
+	}
+	
+	public void saveMaxScore() {
+		if (currentScore > maxScore) {
+			maxScore = currentScore;
+			maxScoreLabel.setText(String.valueOf(maxScore));
+		}
 	}
 	
 }
