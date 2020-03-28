@@ -158,6 +158,8 @@ class Field extends JComponent implements MoveListener {
 		for (int i = 0; i < randomWallsQuantity; i++) {
 			randomWallSize = generateSize();
 			do {
+				crossedX = false;
+				crossedY = false;
 				randomWallCoordinates = generateCoordinates();
 				wallLeftX = randomWallCoordinates.x;
 				wallUpY = randomWallCoordinates.y;
