@@ -3,9 +3,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-class Frame extends JFrame implements ActionListener{
+interface OptionListener {
+	void workWithOptions();
+	void confirmOptions();
+}
+
+class Frame extends JFrame implements ActionListener, OptionListener {
 	
 	private static final long serialVersionUID = 1L;
 	private int frameWidth = 535;
@@ -21,7 +27,7 @@ class Frame extends JFrame implements ActionListener{
 	private int rightPanelX = fieldX + fieldWidth + 5;
 	private int rightPanelY = 10;
 	private RightPanel panel;
-	private Field field;
+	private JComponent field;
 	
 	Frame() {
 		setBounds(frameLocationX, frameLocationY, frameWidth, frameHeight);
@@ -29,24 +35,37 @@ class Frame extends JFrame implements ActionListener{
 		setLayout(null);
 		setResizable(false);
 		
-		panel = new RightPanel();
+		panel = makeRightPanel();
+		add(panel);
+		
+		field = makeOptionField();
+		add(field);
+	}
+	
+	private OptionField makeOptionField() {
+		OptionField field = new OptionField(fieldWidth, fieldHeight, this);
+		field.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		field.setLocation(fieldX, fieldY);
+		return field;
+	}
+	
+	private Field makeField() {
+		Field field = new Field(fieldWidth, fieldHeight, panel);
+		field.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		field.setLocation(fieldX, fieldY);
+		field.setLayout(null);
+		return field;
+	}
+	
+	private RightPanel makeRightPanel() {
+		RightPanel panel = new RightPanel();
 		panel.setSize(rightPanelWidth, rightPanelHeight);
 		panel.setLocation(rightPanelX, rightPanelY);
 		panel.setLayout(null);
 		panel.setFocusable(false);
 		panel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		panel.resetButton.addActionListener(this);
-		add(panel);
-		
-		field = makeField();
-		add(field);
-	}
-	
-	private Field makeField() {
-		Field field = new Field(fieldWidth, fieldHeight, panel);
-		field.setLocation(fieldX, fieldY);
-		field.setLayout(null);
-		return field;
+		return panel;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -57,6 +76,23 @@ class Frame extends JFrame implements ActionListener{
 		add(field);
 		repaint();
 		field.requestFocusInWindow();
+	}
+	
+	public void workWithOptions() {
+		setTitle(Config.getView(Strings.SNAKE));
+		remove(panel);
+		panel = makeRightPanel();
+		add(panel);
+		repaint();
+	}
+	
+	public void confirmOptions() {
+		remove(field);
+		field = makeField();
+		add(field);
+		field.requestFocusInWindow();
+		panel.resetButton.setEnabled(true);
+		repaint();
 	}
 	
 }

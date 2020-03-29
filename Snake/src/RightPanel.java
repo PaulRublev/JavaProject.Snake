@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -26,7 +27,6 @@ class RightPanel extends JPanel implements ScoreListener {
 	private int currentScore = 0;
 	
 	RightPanel() {
-		
 		Wall wallExample = new Wall(new Point(20, 20), 
 				new Dimension(2 * AnyObject.defaultThickness, AnyObject.defaultThickness));
 		add(wallExample);
@@ -81,6 +81,8 @@ class RightPanel extends JPanel implements ScoreListener {
 		resetButton.setBackground(Color.DARK_GRAY);
 		resetButton.setForeground(Color.WHITE);
 		add(resetButton);
+		resetButton.setMnemonic(KeyEvent.VK_R);
+		resetButton.setEnabled(false);
 	}
 	
 	public void refreshScore(int score) {

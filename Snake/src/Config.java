@@ -12,13 +12,13 @@ enum Strings {
 	RESET
 }
 
+enum Views {
+	DEFAULT,
+	ONE,
+	TWO
+}
+
 public class Config {
-	
-	enum Views {
-		DEFAULT,
-		ONE,
-		TWO
-	}
 	
 	private static Views viewConfiguration = Views.DEFAULT;
 	
@@ -27,6 +27,8 @@ public class Config {
 			viewConfiguration = Views.ONE;
 		} else if (anotherViewString.equalsIgnoreCase(Views.TWO.toString())) {
 			viewConfiguration = Views.TWO;
+		} else if (anotherViewString.equalsIgnoreCase(Views.DEFAULT.toString())) {
+			viewConfiguration = Views.DEFAULT;
 		}
 	}
 	

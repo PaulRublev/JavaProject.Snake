@@ -17,7 +17,7 @@ public class StartGame {
 //			System.out.println("File not found. " + e);
 //		}
 		
-		Config.changeView("one");
+		//Config.changeView("one");
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
