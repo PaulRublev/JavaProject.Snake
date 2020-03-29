@@ -1,9 +1,5 @@
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-
-import javax.swing.BorderFactory;
-import javax.swing.border.Border;
 
 class Food extends AnyObject {
 	
@@ -14,10 +10,9 @@ class Food extends AnyObject {
 	}
 	
 	public void makeFood(Point coordinates) {
-		Border foodBorder = BorderFactory.createLineBorder(Color.black, 2);
 		Point foodLocation = coordinates;
 		Dimension foodSize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
-		setBorder(foodBorder);
+		Config.getView(this);
 		setLocation(foodLocation);
 		setSize(foodSize);
 	}
