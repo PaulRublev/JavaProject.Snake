@@ -19,18 +19,20 @@ public class OptionField extends JComponent implements ActionListener {
 	private final String confirmButtonText = "OK";
 	private JCheckBox fileEnabledCheckBox;
 	private JCheckBox fileToDeleteCheckBox;
+	private JLabel titleLabel;
+	private JLabel explanationLabel;
 	
 	OptionField(int width, int height, OptionListener optionListener) {
 		this.optionListener = optionListener;
 		setSize(width, height);
 		
-		JLabel titleLabel = new JLabel("Settings");
+		titleLabel = new JLabel(Config.getView(Strings.SETTINGS));
 		titleLabel.setLocation(150, 10);
-		titleLabel.setSize(100, 40);
+		titleLabel.setSize(140, 40);
 		titleLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
 		add(titleLabel);
 		
-		JLabel explanationLabel = new JLabel("Choose view:");
+		explanationLabel = new JLabel(Config.getView(Strings.CHOOSE_VIEW));
 		explanationLabel.setLocation(10, 50);
 		explanationLabel.setSize(100, 20);
 		add(explanationLabel);
@@ -77,9 +79,9 @@ public class OptionField extends JComponent implements ActionListener {
 		add(oneCustomViewButton);
 		add(twoCustomViewButton);
 		
-		fileToDeleteCheckBox = new JCheckBox("Delete " + Config.fileName);
+		fileToDeleteCheckBox = new JCheckBox(Config.getView(Strings.DEL));
 		fileToDeleteCheckBox.setLocation(10, 305);
-		fileToDeleteCheckBox.setSize(150, 20);
+		fileToDeleteCheckBox.setSize(200, 20);
 		fileToDeleteCheckBox.setEnabled(false);
 		fileToDeleteCheckBox.setSelected(false);
 		fileToDeleteCheckBox.addItemListener(new ItemListener() {
@@ -97,9 +99,9 @@ public class OptionField extends JComponent implements ActionListener {
 		});
 		add(fileToDeleteCheckBox);
 		
-		fileEnabledCheckBox = new JCheckBox("Save in " + Config.fileName);
+		fileEnabledCheckBox = new JCheckBox(Config.getView(Strings.SAVE));
 		fileEnabledCheckBox.setLocation(10, 325);
-		fileEnabledCheckBox.setSize(150, 20);
+		fileEnabledCheckBox.setSize(200, 20);
 		fileEnabledCheckBox.setSelected(Config.fileEnabled);
 		fileEnabledCheckBox.addItemListener(new ItemListener() {
 			
@@ -123,7 +125,7 @@ public class OptionField extends JComponent implements ActionListener {
 		
 		JButton confirmButton = new JButton(confirmButtonText);
 		confirmButton.setActionCommand(confirmButtonText);
-		confirmButton.setLocation(170, 310);
+		confirmButton.setLocation(220, 310);
 		confirmButton.setSize(60, 30);
 		confirmButton.addActionListener(this);
 		add(confirmButton);
@@ -147,6 +149,10 @@ public class OptionField extends JComponent implements ActionListener {
 		} else {
 			Config.changeView(e.getActionCommand());
 			optionListener.workWithOptions();
+			fileEnabledCheckBox.setText(Config.getView(Strings.SAVE));
+			fileToDeleteCheckBox.setText(Config.getView(Strings.DEL));
+			titleLabel.setText(Config.getView(Strings.SETTINGS));
+			explanationLabel.setText(Config.getView(Strings.CHOOSE_VIEW));
 		}
 	}
 	

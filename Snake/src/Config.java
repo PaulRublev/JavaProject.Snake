@@ -19,7 +19,11 @@ enum Strings {
 	SNAKE,
 	SCORE,
 	RECORD,
-	RESET
+	RESET,
+	SETTINGS,
+	CHOOSE_VIEW,
+	DEL,
+	SAVE
 }
 
 enum Views {
@@ -130,6 +134,14 @@ public class Config {
 				return "Record:";
 			case RESET:
 				return "RESET";
+			case CHOOSE_VIEW:
+				return "Choose view:";
+			case SETTINGS:
+				return "Settings";
+			case DEL:
+				return "Delete \"" + Config.fileName + "\"";
+			case SAVE:
+				return "Save to \"" + Config.fileName + "\"";
 
 			default:
 				return "?";
@@ -148,6 +160,14 @@ public class Config {
 				return "Рекорд:";
 			case RESET:
 				return "СБРОС";
+			case CHOOSE_VIEW:
+				return "Выбрать вид:";
+			case SETTINGS:
+				return "Настройки";
+			case DEL:
+				return "Удалить \"" + Config.fileName + "\"";
+			case SAVE:
+				return "Сохранить в \"" + Config.fileName + "\"";
 
 			default:
 				return "?";
