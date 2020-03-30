@@ -1,23 +1,17 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 import javax.swing.*;
 
 public class StartGame {
 	
 	public static void main(String[] args) throws IOException {
-//		try {
-//			String fConfigPath = "./config";
-//			File fCongig = new File(fConfigPath);
-//			if (fCongig.exists()) {
-//				
-//			}
-//		} catch (FileNotFoundException e) {
-//			System.out.println("File not found. " + e);
-//		}
+		if (new File(Config.fileName).exists()) {
+			Config.fileEnabled = true;
+		}
 		
-		//Config.changeView("one");
+		if (Config.fileEnabled) {
+			Config.workWithConfigFile();
+		}
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
