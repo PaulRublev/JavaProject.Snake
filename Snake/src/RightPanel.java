@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -77,11 +76,8 @@ class RightPanel extends JPanel implements ScoreListener {
 		resetButton.setBounds(20, 290, 60, 40);
 		resetButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 7));
 		resetButton.setFocusable(false);
-		resetButton.setOpaque(true);
-		resetButton.setBackground(Color.DARK_GRAY);
-		resetButton.setForeground(Color.WHITE);
+		resetButton.setForeground(Color.BLACK);
 		add(resetButton);
-		resetButton.setMnemonic(KeyEvent.VK_R);
 		resetButton.setEnabled(false);
 	}
 	

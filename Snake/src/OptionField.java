@@ -1,16 +1,8 @@
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.io.File;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
+import javax.swing.*;
 
 public class OptionField extends JComponent implements ActionListener {
 	
@@ -81,7 +73,7 @@ public class OptionField extends JComponent implements ActionListener {
 		
 		fileToDeleteCheckBox = new JCheckBox(Config.getView(Strings.DEL));
 		fileToDeleteCheckBox.setLocation(10, 305);
-		fileToDeleteCheckBox.setSize(200, 20);
+		fileToDeleteCheckBox.setSize(240, 20);
 		fileToDeleteCheckBox.setEnabled(false);
 		fileToDeleteCheckBox.setSelected(false);
 		fileToDeleteCheckBox.addItemListener(new ItemListener() {
@@ -101,7 +93,7 @@ public class OptionField extends JComponent implements ActionListener {
 		
 		fileEnabledCheckBox = new JCheckBox(Config.getView(Strings.SAVE));
 		fileEnabledCheckBox.setLocation(10, 325);
-		fileEnabledCheckBox.setSize(200, 20);
+		fileEnabledCheckBox.setSize(240, 20);
 		fileEnabledCheckBox.setSelected(Config.fileEnabled);
 		fileEnabledCheckBox.addItemListener(new ItemListener() {
 			
@@ -125,7 +117,7 @@ public class OptionField extends JComponent implements ActionListener {
 		
 		JButton confirmButton = new JButton(confirmButtonText);
 		confirmButton.setActionCommand(confirmButtonText);
-		confirmButton.setLocation(220, 310);
+		confirmButton.setLocation(320, 310);
 		confirmButton.setSize(60, 30);
 		confirmButton.addActionListener(this);
 		add(confirmButton);
