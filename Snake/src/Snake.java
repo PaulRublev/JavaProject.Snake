@@ -1,23 +1,20 @@
 import java.awt.*;
 import java.util.LinkedList;
 
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
-
 class Snake {
 	
 	class SnakeBody extends AnyObject {
 		private static final long serialVersionUID = 1L;
 		
 		SnakeBody() {
-			setBorder(BorderFactory.createLineBorder(Color.black, 1));
+			Config.getView(this);
 		}
 	}
 	class SnakeHead extends AnyObject {
 		private static final long serialVersionUID = 1L;
 		
 		public SnakeHead() {
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			Config.getView(this);
 		}
 	}
 

@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -26,19 +27,18 @@ class RightPanel extends JPanel implements ScoreListener {
 	private int currentScore = 0;
 	
 	RightPanel() {
-		
 		Wall wallExample = new Wall(new Point(20, 20), 
 				new Dimension(2 * AnyObject.defaultThickness, AnyObject.defaultThickness));
 		add(wallExample);
 		
-		JLabel wallExplanationLabel = new JLabel("Wall");
+		JLabel wallExplanationLabel = new JLabel(Config.getView(Strings.WALL));
 		wallExplanationLabel.setBounds(20, 30, 60, 20);
 		add(wallExplanationLabel);
 		
 		Food foodExample = new Food(new Point(20, 60));
 		add(foodExample);
 		
-		JLabel foodExplanationLabel = new JLabel("Food");
+		JLabel foodExplanationLabel = new JLabel(Config.getView(Strings.FOOD));
 		foodExplanationLabel.setBounds(20, 70, 60, 20);
 		add(foodExplanationLabel);
 		
@@ -47,11 +47,11 @@ class RightPanel extends JPanel implements ScoreListener {
 			add(snakeParts);
 		}
 		
-		JLabel snakeExplanationLabel = new JLabel("Snake");
+		JLabel snakeExplanationLabel = new JLabel(Config.getView(Strings.SNAKE));
 		snakeExplanationLabel.setBounds(20, 110, 60, 20);
 		add(snakeExplanationLabel);
 		
-		JLabel scoreExplanationLabel = new JLabel("Score:");
+		JLabel scoreExplanationLabel = new JLabel(Config.getView(Strings.SCORE));
 		scoreExplanationLabel.setBounds(20, 150, 60, 20);
 		scoreExplanationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(scoreExplanationLabel);
@@ -62,7 +62,7 @@ class RightPanel extends JPanel implements ScoreListener {
 		scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
 		add(scoreLabel);
 		
-		JLabel maxScoreExplanationLabel = new JLabel("Record:");
+		JLabel maxScoreExplanationLabel = new JLabel(Config.getView(Strings.RECORD));
 		maxScoreExplanationLabel.setBounds(20, 210, 60, 20);
 		maxScoreExplanationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(maxScoreExplanationLabel);
@@ -73,14 +73,16 @@ class RightPanel extends JPanel implements ScoreListener {
 		maxScoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
 		add(maxScoreLabel);
 		
-		resetButton = new JButton("RESET");
+		resetButton = new JButton(Config.getView(Strings.RESET));
 		resetButton.setBounds(20, 290, 60, 40);
-		resetButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 8));
+		resetButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 7));
 		resetButton.setFocusable(false);
 		resetButton.setOpaque(true);
 		resetButton.setBackground(Color.DARK_GRAY);
 		resetButton.setForeground(Color.WHITE);
 		add(resetButton);
+		resetButton.setMnemonic(KeyEvent.VK_R);
+		resetButton.setEnabled(false);
 	}
 	
 	public void refreshScore(int score) {
