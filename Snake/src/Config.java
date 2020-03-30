@@ -31,6 +31,7 @@ enum Views {
 public class Config {
 	
 	public static final String fileName = "./config.md";
+	public static boolean fileToDelete = false;
 	public static boolean fileEnabled = false;
 	public static Views viewConfiguration = Views.DEFAULT;
 	public final static String view = "view";
@@ -178,6 +179,16 @@ public class Config {
 		return file;
 	}
 	
+	public static boolean fileExists(String fileName) {
+		boolean exists = false;
+		try {
+			 exists = new File(fileName).exists();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return exists;
+	}
+	
 	public static void fillConfigFile(File file) throws IOException {
 		FileOutputStream fOut = new FileOutputStream(file);
 		BufferedWriter bOut = new BufferedWriter(new OutputStreamWriter(fOut, "UTF-8"));
@@ -227,12 +238,8 @@ public class Config {
 							if (isKey && !isKeyCheck) {
 								isValue = true;
 							} else if (key.equalsIgnoreCase(keyCheck)) {
-								System.out.println(key);
-								System.out.println(value);
-								
 								Config.configFileHashMap.put(key, value);
 								Config.applyConfigFileHashMap();
-								System.out.println(Config.configFileHashMap);
 								key = "";
 								keyCheck = "";
 								value = "";

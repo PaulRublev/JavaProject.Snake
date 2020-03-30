@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -8,33 +9,47 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
 public class OptionField extends JComponent implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
-	OptionListener optionListener;
+	private OptionListener optionListener;
 	private final String confirmButtonText = "OK";
+	private JCheckBox fileEnabledCheckBox;
+	private JCheckBox fileToDeleteCheckBox;
 	
 	OptionField(int width, int height, OptionListener optionListener) {
 		this.optionListener = optionListener;
 		setSize(width, height);
+		
+		JLabel titleLabel = new JLabel("Settings");
+		titleLabel.setLocation(150, 10);
+		titleLabel.setSize(100, 40);
+		titleLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+		add(titleLabel);
+		
+		JLabel explanationLabel = new JLabel("Choose view:");
+		explanationLabel.setLocation(10, 50);
+		explanationLabel.setSize(100, 20);
+		add(explanationLabel);
 	
 		JRadioButton defaultViewButton = new JRadioButton(Views.DEFAULT.toString().toLowerCase(), true);
 		defaultViewButton.setActionCommand(Views.DEFAULT.toString());
 		defaultViewButton.addActionListener(this);
-		defaultViewButton.setLocation(10, 40);
+		defaultViewButton.setLocation(10, 80);
 		defaultViewButton.setSize(100, 30);
 		
 		JRadioButton oneCustomViewButton = new JRadioButton(Views.ONE.toString().toLowerCase(), false);
 		oneCustomViewButton.setActionCommand(Views.ONE.toString());
-		oneCustomViewButton.setLocation(10, 70);
+		oneCustomViewButton.setLocation(10, 110);
 		oneCustomViewButton.setSize(100, 30);
 		oneCustomViewButton.addActionListener(this);
 		
 		JRadioButton twoCustomViewButton = new JRadioButton(Views.TWO.toString().toLowerCase(), false);
 		twoCustomViewButton.setActionCommand(Views.TWO.toString());
-		twoCustomViewButton.setLocation(10, 100);
+		twoCustomViewButton.setLocation(10, 140);
 		twoCustomViewButton.setSize(100, 30);
 		twoCustomViewButton.addActionListener(this);
 		twoCustomViewButton.setEnabled(false);
@@ -62,8 +77,28 @@ public class OptionField extends JComponent implements ActionListener {
 		add(oneCustomViewButton);
 		add(twoCustomViewButton);
 		
-		JCheckBox fileEnabledCheckBox = new JCheckBox("Save in " + Config.fileName);
-		fileEnabledCheckBox.setLocation(10, 315);
+		fileToDeleteCheckBox = new JCheckBox("Delete " + Config.fileName);
+		fileToDeleteCheckBox.setLocation(10, 305);
+		fileToDeleteCheckBox.setSize(150, 20);
+		fileToDeleteCheckBox.setEnabled(false);
+		fileToDeleteCheckBox.setSelected(false);
+		fileToDeleteCheckBox.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.DESELECTED) {
+					fileEnabledCheckBox.setEnabled(true);
+					Config.fileToDelete = false;
+				} else if (e.getStateChange() == ItemEvent.SELECTED) {
+					fileEnabledCheckBox.setEnabled(false);
+					Config.fileToDelete = true;
+				}
+			}
+		});
+		add(fileToDeleteCheckBox);
+		
+		fileEnabledCheckBox = new JCheckBox("Save in " + Config.fileName);
+		fileEnabledCheckBox.setLocation(10, 325);
 		fileEnabledCheckBox.setSize(150, 20);
 		fileEnabledCheckBox.setSelected(Config.fileEnabled);
 		fileEnabledCheckBox.addItemListener(new ItemListener() {
@@ -71,11 +106,15 @@ public class OptionField extends JComponent implements ActionListener {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (fileEnabledCheckBox == e.getItemSelectable()) {
-					//System.out.println("|");
 					if (e.getStateChange() == ItemEvent.DESELECTED) {
 						Config.fileEnabled = false;
+						if (Config.fileExists(Config.fileName)) {
+							fileToDeleteCheckBox.setEnabled(true);
+						}
 					} else if (e.getStateChange() == ItemEvent.SELECTED) {
 						Config.fileEnabled = true;
+						fileToDeleteCheckBox.setEnabled(false);
+						fileToDeleteCheckBox.setSelected(false);
 					}
 				}
 			}
@@ -94,12 +133,16 @@ public class OptionField extends JComponent implements ActionListener {
 		String actionCommandString = e.getActionCommand();
 		if (actionCommandString.equalsIgnoreCase(confirmButtonText)) {
 			optionListener.confirmOptions();
-			if (Config.fileEnabled) {
-				try {
-					Config.fillConfigFile(new File(Config.fileName));
-				} catch (Exception exception) {
-					System.out.println("File not found. " + exception);
+			try {
+				File file = new File(Config.fileName);
+				if (Config.fileEnabled) {
+					Config.fillConfigFile(file);
+				} else if (Config.fileToDelete) {
+					file.delete();
+					System.out.print("?");
 				}
+			} catch (Exception exception) {
+				System.out.println("File not found. " + exception);
 			}
 		} else {
 			Config.changeView(e.getActionCommand());
