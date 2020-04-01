@@ -22,7 +22,6 @@ class RightPanel extends JPanel implements ScoreListener {
 	private JLabel scoreLabel;
 	private JLabel maxScoreLabel;
 	private int initialScore = 0;
-	private int maxScore = 0;
 	private int currentScore = 0;
 	
 	RightPanel() {
@@ -66,7 +65,7 @@ class RightPanel extends JPanel implements ScoreListener {
 		maxScoreExplanationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(maxScoreExplanationLabel);
 		
-		maxScoreLabel = new JLabel(String.valueOf(maxScore), SwingConstants.CENTER);
+		maxScoreLabel = new JLabel(String.valueOf(Config.maxScore), SwingConstants.CENTER);
 		maxScoreLabel.setBounds(20, 230, 60, 40);
 		maxScoreLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		maxScoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
@@ -87,9 +86,9 @@ class RightPanel extends JPanel implements ScoreListener {
 	}
 	
 	public void saveMaxScore() {
-		if (currentScore > maxScore) {
-			maxScore = currentScore;
-			maxScoreLabel.setText(String.valueOf(maxScore));
+		if (currentScore > Config.maxScore) {
+			Config.maxScore = currentScore;
+			maxScoreLabel.setText(String.valueOf(Config.maxScore));
 		}
 	}
 	

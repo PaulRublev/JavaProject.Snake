@@ -26,7 +26,7 @@ public class OptionField extends JComponent implements ActionListener {
 		add(titleLabel);
 		
 		viewExplanationLabel = new JLabel(Config.getLang(Strings.CHOOSE_VIEW));
-		viewExplanationLabel.setLocation(10, 50);
+		viewExplanationLabel.setLocation(10, 60);
 		viewExplanationLabel.setSize(100, 20);
 		add(viewExplanationLabel);
 	
@@ -34,18 +34,18 @@ public class OptionField extends JComponent implements ActionListener {
 		defaultViewButton.setActionCommand(Views.DEFAULT.toString());
 		defaultViewButton.addActionListener(this);
 		defaultViewButton.setLocation(10, 80);
-		defaultViewButton.setSize(100, 30);
+		defaultViewButton.setSize(100, 20);
 		
 		JRadioButton oneCustomViewButton = new JRadioButton(Views.ONE.toString().toLowerCase(), false);
 		oneCustomViewButton.setActionCommand(Views.ONE.toString());
-		oneCustomViewButton.setLocation(10, 110);
-		oneCustomViewButton.setSize(100, 30);
+		oneCustomViewButton.setLocation(10, 100);
+		oneCustomViewButton.setSize(100, 20);
 		oneCustomViewButton.addActionListener(this);
 		
 		JRadioButton twoCustomViewButton = new JRadioButton(Views.TWO.toString().toLowerCase(), false);
 		twoCustomViewButton.setActionCommand(Views.TWO.toString());
-		twoCustomViewButton.setLocation(10, 140);
-		twoCustomViewButton.setSize(100, 30);
+		twoCustomViewButton.setLocation(10, 120);
+		twoCustomViewButton.setSize(100, 20);
 		twoCustomViewButton.addActionListener(this);
 		twoCustomViewButton.setEnabled(false);
 		
@@ -73,7 +73,7 @@ public class OptionField extends JComponent implements ActionListener {
 		add(twoCustomViewButton);
 		
 		langExplanationLabel = new JLabel(Config.getLang(Strings.CHOOSE_LANG));
-		langExplanationLabel.setLocation(140, 50);
+		langExplanationLabel.setLocation(140, 60);
 		langExplanationLabel.setSize(140, 20);
 		add(langExplanationLabel);
 		
@@ -94,13 +94,13 @@ public class OptionField extends JComponent implements ActionListener {
 		JRadioButton enRadioButton = new JRadioButton(Languages.EN.toString().toLowerCase(), true);
 		enRadioButton.setActionCommand(Languages.EN.toString());
 		enRadioButton.setLocation(140, 80);
-		enRadioButton.setSize(100, 30);
+		enRadioButton.setSize(100, 20);
 		enRadioButton.addActionListener(langListener);
 		
 		JRadioButton ruRadioButton = new JRadioButton(Languages.RU.toString().toLowerCase(), false);
 		ruRadioButton.setActionCommand(Languages.RU.toString());
-		ruRadioButton.setLocation(140, 110);
-		ruRadioButton.setSize(100, 30);
+		ruRadioButton.setLocation(140, 100);
+		ruRadioButton.setSize(100, 20);
 		ruRadioButton.addActionListener(langListener);
 		
 		ButtonGroup langButtonGroup = new ButtonGroup();
