@@ -15,6 +15,7 @@ enum Strings {
 	RESET,
 	SETTINGS,
 	CHOOSE_VIEW,
+	CHOOSE_LANG,
 	DEL,
 	SAVE
 }
@@ -25,13 +26,22 @@ enum Views {
 	TWO
 }
 
+enum Languages {
+	EN,
+	RU
+}
+
 public class Config {
 	
 	public static final String fileName = "./config.md";
 	public static boolean fileToDelete = false;
 	public static boolean fileEnabled = false;
 	public static Views viewConfiguration = Views.DEFAULT;
+	public static Languages langConfiguration = Languages.EN;
+	public static int maxScore = 0;
 	public final static String view = "view";
+	public final static String lang = "lang";
+	public final static String score = "score";
 	public static HashMap<String, String> configFileHashMap = new HashMap<String, String>();
 	
 	public static void changeView(String anotherViewString) {
@@ -42,6 +52,27 @@ public class Config {
 				viewConfiguration = Views.TWO;
 			} else if (anotherViewString.equalsIgnoreCase(Views.DEFAULT.toString())) {
 				viewConfiguration = Views.DEFAULT;
+			}
+		}
+	}
+	
+	public static void changeLang(String anotherLangString) {
+		if (anotherLangString != null) {
+			if (anotherLangString.equalsIgnoreCase(Languages.EN.toString())) {
+				langConfiguration = Languages.EN;
+			} else if (anotherLangString.equalsIgnoreCase(Languages.RU.toString())) {
+				langConfiguration = Languages.RU;
+			}
+		}
+	}
+	
+	public static void changeMaxScore(String scoreString) {
+		if (scoreString != null) {
+			try {
+				int score = Integer.parseInt(scoreString);
+				maxScore = score;
+			} catch (NumberFormatException e) {
+				System.out.print(e);
 			}
 		}
 	}
@@ -111,9 +142,9 @@ public class Config {
 		}
 	}
 	
-	public static String getView(Strings string) {
-		switch (viewConfiguration) {
-		case DEFAULT:
+	public static String getLang(Strings string) {
+		switch (langConfiguration) {
+		case EN:
 			switch (string) {
 			case WALL:
 				return "Wall";
@@ -128,7 +159,9 @@ public class Config {
 			case RESET:
 				return "RESET";
 			case CHOOSE_VIEW:
-				return "Choose view:";
+				return "View:";
+			case CHOOSE_LANG:
+				return "Language:";
 			case SETTINGS:
 				return "Settings";
 			case DEL:
@@ -139,7 +172,7 @@ public class Config {
 			default:
 				return "?";
 			}
-		case ONE:
+		case RU:
 			switch (string) {
 			case WALL:
 				return "Стена";
@@ -154,7 +187,9 @@ public class Config {
 			case RESET:
 				return "СБРОС";
 			case CHOOSE_VIEW:
-				return "Выбрать вид:";
+				return "Вид:";
+			case CHOOSE_LANG:
+				return "Язык:";
 			case SETTINGS:
 				return "Настройки";
 			case DEL:
@@ -165,19 +200,21 @@ public class Config {
 			default:
 				return "?";
 			}
-			
-		case TWO:
-			break;
+		default:
+			return "?";
 		}
-		return null;
 	}
 	
 	private static void createConfigFileHashMap() {
 		configFileHashMap.put(view, viewConfiguration.toString());
+		configFileHashMap.put(lang, langConfiguration.toString());
+		configFileHashMap.put(score, String.valueOf(maxScore));
 	}
 	
 	public static void applyConfigFileHashMap() {
 		changeView(configFileHashMap.get(view));
+		changeLang(configFileHashMap.get(lang));
+		changeMaxScore(configFileHashMap.get(score));
 	}
 	
 	public static String getConfigurations() {
@@ -195,7 +232,7 @@ public class Config {
 	public static boolean fileExists(String fileName) {
 		boolean exists = false;
 		try {
-			 exists = new File(fileName).exists();
+			exists = new File(fileName).exists();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
