@@ -12,7 +12,8 @@ public class OptionField extends JComponent implements ActionListener {
 	private JCheckBox fileEnabledCheckBox;
 	private JCheckBox fileToDeleteCheckBox;
 	private JLabel titleLabel;
-	private JLabel explanationLabel;
+	private JLabel viewExplanationLabel;
+	private JLabel langExplanationLabel;
 	
 	OptionField(int width, int height, OptionListener optionListener) {
 		this.optionListener = optionListener;
@@ -24,10 +25,10 @@ public class OptionField extends JComponent implements ActionListener {
 		titleLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
 		add(titleLabel);
 		
-		explanationLabel = new JLabel(Config.getLang(Strings.CHOOSE_VIEW));
-		explanationLabel.setLocation(10, 50);
-		explanationLabel.setSize(100, 20);
-		add(explanationLabel);
+		viewExplanationLabel = new JLabel(Config.getLang(Strings.CHOOSE_VIEW));
+		viewExplanationLabel.setLocation(10, 50);
+		viewExplanationLabel.setSize(100, 20);
+		add(viewExplanationLabel);
 	
 		JRadioButton defaultViewButton = new JRadioButton(Views.DEFAULT.toString().toLowerCase(), true);
 		defaultViewButton.setActionCommand(Views.DEFAULT.toString());
@@ -71,6 +72,11 @@ public class OptionField extends JComponent implements ActionListener {
 		add(oneCustomViewButton);
 		add(twoCustomViewButton);
 		
+		langExplanationLabel = new JLabel(Config.getLang(Strings.CHOOSE_LANG));
+		langExplanationLabel.setLocation(140, 50);
+		langExplanationLabel.setSize(140, 20);
+		add(langExplanationLabel);
+		
 		ActionListener langListener = new ActionListener() {
 			
 			@Override
@@ -80,7 +86,8 @@ public class OptionField extends JComponent implements ActionListener {
 				fileEnabledCheckBox.setText(Config.getLang(Strings.SAVE));
 				fileToDeleteCheckBox.setText(Config.getLang(Strings.DEL));
 				titleLabel.setText(Config.getLang(Strings.SETTINGS));
-				explanationLabel.setText(Config.getLang(Strings.CHOOSE_VIEW));
+				viewExplanationLabel.setText(Config.getLang(Strings.CHOOSE_VIEW));
+				langExplanationLabel.setText(Config.getLang(Strings.CHOOSE_LANG));
 			}
 		};
 		

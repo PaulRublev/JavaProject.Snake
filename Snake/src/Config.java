@@ -15,6 +15,7 @@ enum Strings {
 	RESET,
 	SETTINGS,
 	CHOOSE_VIEW,
+	CHOOSE_LANG,
 	DEL,
 	SAVE
 }
@@ -146,6 +147,8 @@ public class Config {
 				return "RESET";
 			case CHOOSE_VIEW:
 				return "Choose view:";
+			case CHOOSE_LANG:
+				return "Choose language:";
 			case SETTINGS:
 				return "Settings";
 			case DEL:
@@ -172,6 +175,8 @@ public class Config {
 				return "СБРОС";
 			case CHOOSE_VIEW:
 				return "Выбрать вид:";
+			case CHOOSE_LANG:
+				return "Выбрать язык:";
 			case SETTINGS:
 				return "Настройки";
 			case DEL:
