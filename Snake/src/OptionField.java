@@ -18,13 +18,13 @@ public class OptionField extends JComponent implements ActionListener {
 		this.optionListener = optionListener;
 		setSize(width, height);
 		
-		titleLabel = new JLabel(Config.getView(Strings.SETTINGS));
+		titleLabel = new JLabel(Config.getLang(Strings.SETTINGS));
 		titleLabel.setLocation(150, 10);
 		titleLabel.setSize(140, 40);
 		titleLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
 		add(titleLabel);
 		
-		explanationLabel = new JLabel(Config.getView(Strings.CHOOSE_VIEW));
+		explanationLabel = new JLabel(Config.getLang(Strings.CHOOSE_VIEW));
 		explanationLabel.setLocation(10, 50);
 		explanationLabel.setSize(100, 20);
 		add(explanationLabel);
@@ -71,7 +71,50 @@ public class OptionField extends JComponent implements ActionListener {
 		add(oneCustomViewButton);
 		add(twoCustomViewButton);
 		
-		fileToDeleteCheckBox = new JCheckBox(Config.getView(Strings.DEL));
+		ActionListener langListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Config.changeLang(e.getActionCommand());
+				optionListener.workWithOptions();
+				fileEnabledCheckBox.setText(Config.getLang(Strings.SAVE));
+				fileToDeleteCheckBox.setText(Config.getLang(Strings.DEL));
+				titleLabel.setText(Config.getLang(Strings.SETTINGS));
+				explanationLabel.setText(Config.getLang(Strings.CHOOSE_VIEW));
+			}
+		};
+		
+		JRadioButton enRadioButton = new JRadioButton(Languages.EN.toString().toLowerCase(), true);
+		enRadioButton.setActionCommand(Languages.EN.toString());
+		enRadioButton.setLocation(140, 80);
+		enRadioButton.setSize(100, 30);
+		enRadioButton.addActionListener(langListener);
+		
+		JRadioButton ruRadioButton = new JRadioButton(Languages.RU.toString().toLowerCase(), false);
+		ruRadioButton.setActionCommand(Languages.RU.toString());
+		ruRadioButton.setLocation(140, 110);
+		ruRadioButton.setSize(100, 30);
+		ruRadioButton.addActionListener(langListener);
+		
+		ButtonGroup langButtonGroup = new ButtonGroup();
+		langButtonGroup.add(enRadioButton);
+		langButtonGroup.add(ruRadioButton);
+		
+		switch (Config.langConfiguration) {
+		case EN:
+			enRadioButton.setSelected(true);
+			break;
+		case RU:
+			ruRadioButton.setSelected(true);
+			break;
+		default:
+			break;
+		}
+		
+		add(ruRadioButton);
+		add(enRadioButton);
+		
+		fileToDeleteCheckBox = new JCheckBox(Config.getLang(Strings.DEL));
 		fileToDeleteCheckBox.setLocation(10, 305);
 		fileToDeleteCheckBox.setSize(240, 20);
 		fileToDeleteCheckBox.setEnabled(false);
@@ -91,7 +134,7 @@ public class OptionField extends JComponent implements ActionListener {
 		});
 		add(fileToDeleteCheckBox);
 		
-		fileEnabledCheckBox = new JCheckBox(Config.getView(Strings.SAVE));
+		fileEnabledCheckBox = new JCheckBox(Config.getLang(Strings.SAVE));
 		fileEnabledCheckBox.setLocation(10, 325);
 		fileEnabledCheckBox.setSize(240, 20);
 		fileEnabledCheckBox.setSelected(Config.fileEnabled);
@@ -133,7 +176,6 @@ public class OptionField extends JComponent implements ActionListener {
 					Config.fillConfigFile(file);
 				} else if (Config.fileToDelete) {
 					file.delete();
-					System.out.print("?");
 				}
 			} catch (Exception exception) {
 				System.out.println("File not found. " + exception);
@@ -141,10 +183,6 @@ public class OptionField extends JComponent implements ActionListener {
 		} else {
 			Config.changeView(e.getActionCommand());
 			optionListener.workWithOptions();
-			fileEnabledCheckBox.setText(Config.getView(Strings.SAVE));
-			fileToDeleteCheckBox.setText(Config.getView(Strings.DEL));
-			titleLabel.setText(Config.getView(Strings.SETTINGS));
-			explanationLabel.setText(Config.getView(Strings.CHOOSE_VIEW));
 		}
 	}
 	

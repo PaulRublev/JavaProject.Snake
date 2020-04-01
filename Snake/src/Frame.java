@@ -79,7 +79,7 @@ class Frame extends JFrame implements ActionListener, OptionListener {
 	}
 	
 	public void workWithOptions() {
-		setTitle(Config.getView(Strings.SNAKE));
+		setTitle(Config.getLang(Strings.SNAKE));
 		remove(panel);
 		panel = makeRightPanel();
 		add(panel);

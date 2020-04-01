@@ -30,14 +30,14 @@ class RightPanel extends JPanel implements ScoreListener {
 				new Dimension(2 * AnyObject.defaultThickness, AnyObject.defaultThickness));
 		add(wallExample);
 		
-		JLabel wallExplanationLabel = new JLabel(Config.getView(Strings.WALL));
+		JLabel wallExplanationLabel = new JLabel(Config.getLang(Strings.WALL));
 		wallExplanationLabel.setBounds(20, 30, 60, 20);
 		add(wallExplanationLabel);
 		
 		Food foodExample = new Food(new Point(20, 60));
 		add(foodExample);
 		
-		JLabel foodExplanationLabel = new JLabel(Config.getView(Strings.FOOD));
+		JLabel foodExplanationLabel = new JLabel(Config.getLang(Strings.FOOD));
 		foodExplanationLabel.setBounds(20, 70, 60, 20);
 		add(foodExplanationLabel);
 		
@@ -46,11 +46,11 @@ class RightPanel extends JPanel implements ScoreListener {
 			add(snakeParts);
 		}
 		
-		JLabel snakeExplanationLabel = new JLabel(Config.getView(Strings.SNAKE));
+		JLabel snakeExplanationLabel = new JLabel(Config.getLang(Strings.SNAKE));
 		snakeExplanationLabel.setBounds(20, 110, 60, 20);
 		add(snakeExplanationLabel);
 		
-		JLabel scoreExplanationLabel = new JLabel(Config.getView(Strings.SCORE));
+		JLabel scoreExplanationLabel = new JLabel(Config.getLang(Strings.SCORE));
 		scoreExplanationLabel.setBounds(20, 150, 60, 20);
 		scoreExplanationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(scoreExplanationLabel);
@@ -61,7 +61,7 @@ class RightPanel extends JPanel implements ScoreListener {
 		scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
 		add(scoreLabel);
 		
-		JLabel maxScoreExplanationLabel = new JLabel(Config.getView(Strings.RECORD));
+		JLabel maxScoreExplanationLabel = new JLabel(Config.getLang(Strings.RECORD));
 		maxScoreExplanationLabel.setBounds(20, 210, 60, 20);
 		maxScoreExplanationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(maxScoreExplanationLabel);
@@ -72,7 +72,7 @@ class RightPanel extends JPanel implements ScoreListener {
 		maxScoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
 		add(maxScoreLabel);
 		
-		resetButton = new JButton(Config.getView(Strings.RESET));
+		resetButton = new JButton(Config.getLang(Strings.RESET));
 		resetButton.setBounds(20, 290, 60, 40);
 		resetButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 7));
 		resetButton.setFocusable(false);

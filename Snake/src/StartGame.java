@@ -17,7 +17,7 @@ public class StartGame {
 			public void run() {
 				JFrame.setDefaultLookAndFeelDecorated(true);
 				Frame frame = new Frame();
-				frame.setTitle(Config.getView(Strings.SNAKE));
+				frame.setTitle(Config.getLang(Strings.SNAKE));
 				frame.setVisible(true);
 			}
 		});
