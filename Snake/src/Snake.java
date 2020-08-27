@@ -1,20 +1,23 @@
 import java.awt.*;
 import java.util.LinkedList;
 
+import javax.swing.BorderFactory;
+import javax.swing.border.BevelBorder;
+
 class Snake {
 	
 	class SnakeBody extends AnyObject {
 		private static final long serialVersionUID = 1L;
 		
 		SnakeBody() {
-			Config.getView(this);
+			setView(this);
 		}
 	}
 	class SnakeHead extends AnyObject {
 		private static final long serialVersionUID = 1L;
 		
 		public SnakeHead() {
-			Config.getView(this);
+			setView(this);
 		}
 	}
 
@@ -62,4 +65,35 @@ class Snake {
 		snakeBody.add(body);
 	}
 	
+	private void setView(SnakeBody body) {
+		switch (Config.viewConfiguration) {
+		case DEFAULT:
+			body.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+			break;
+		case ONE:
+			body.setOpaque(true);
+			body.setBackground(Color.LIGHT_GRAY);
+			body.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			break;
+		case TWO:
+			
+			break;
+		}
+	}
+	
+	private void setView(Snake.SnakeHead head) {
+		switch (Config.viewConfiguration) {
+		case DEFAULT:
+			head.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			break;
+		case ONE:
+			head.setOpaque(true);
+			head.setBackground(Color.GRAY);
+			head.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			break;
+		case TWO:
+			
+			break;
+		}
+	}
 }

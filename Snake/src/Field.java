@@ -1,35 +1,63 @@
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 import javax.swing.JComponent;
 
-interface MoveListener {
-	void snakeMove(Directions direction);
+enum Directions {
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
 }
 
-class Field extends JComponent implements MoveListener {
+class Field extends JComponent {
 	
 	private static final long serialVersionUID = 1L;
-	private int maxRandomWallsQuantity = 5;
-	private int minRandomWallsQuantity = 2;
-	private int maxRandomWallSize = 4;
-	private int minRandomWallSize = 1;
+	private static final int maxRandomWallsQuantity = 5;
+	private static final int minRandomWallsQuantity = 2;
+	private static final int maxRandomWallSize = 4;
+	private static final int minRandomWallSize = 1;
 	private Wall upWall;
 	private Wall downWall;
 	private Wall leftWall;
 	private Wall rightWall;
 	private Food food;
 	private Snake snake;
-	private int maxSnakeLenght;
+	private int maxSnakeLength;
 	private ScoreListener scoreListener;
 	
 	Field(int width, int height, ScoreListener scoreListener) {
 		this.scoreListener = scoreListener;
 		setSize(width, height);
 		setFocusable(true);
-		addKeyListener(new KeyEventHandler(this));
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Directions direction;
+				switch (e.getExtendedKeyCode()) {
+				case 37: // Left
+					direction = Directions.LEFT;
+					snakeMove(direction);
+					break;
+				case 38: // Up
+					direction = Directions.UP;
+					snakeMove(direction);
+					break;
+				case 39: // Right
+					direction = Directions.RIGHT;
+					snakeMove(direction);
+					break;
+				case 40: // Down
+					direction = Directions.DOWN;
+					snakeMove(direction);
+					break;
+				}
+			}
+		});
 		
 		setWallsAround();
 		setRandomWalls();
@@ -40,13 +68,13 @@ class Field extends JComponent implements MoveListener {
 		for (AnyObject snakeParts : snake.snakeBody) {
 			add(snakeParts);
 		}
-		maxSnakeLenght = snake.snakeBody.size();
+		maxSnakeLength = snake.snakeBody.size();
 		
 		food = new Food(generateCoordinates());
 		add(food);
 	}
 	
-	public void snakeMove(Directions direction) {
+	private void snakeMove(Directions direction) {
 		int componentCount = getComponentCount();
 		AnyObject head = snake.snakeBody.peek();
 		setComponentZOrder(head, componentCount - 1);
@@ -95,9 +123,9 @@ class Field extends JComponent implements MoveListener {
 			snake.isFed = false;
 		}
 		
-		if (scoreListener != null && maxSnakeLenght < snake.snakeBody.size()) {
-			maxSnakeLenght = snake.snakeBody.size();
-			scoreListener.refreshScore(maxSnakeLenght - 3);
+		if (scoreListener != null && maxSnakeLength < snake.snakeBody.size()) {
+			maxSnakeLength = snake.snakeBody.size();
+			scoreListener.refreshScore(maxSnakeLength - 3);
 		}
 		
 		componentCount = getComponentCount();
@@ -120,7 +148,7 @@ class Field extends JComponent implements MoveListener {
 		}
 	}
 	
-	void setWallsAround() {
+	private void setWallsAround() {
 		Point upWallCoordinates = new Point(0, 0);
 		Dimension upNDownWallSize = new Dimension(getWidth(), AnyObject.defaultThickness);
 		Point downWallCoordinates = new Point(0, getHeight() - AnyObject.defaultThickness);
@@ -139,7 +167,7 @@ class Field extends JComponent implements MoveListener {
 		add(rightWall);
 	}
 	
-	void setRandomWalls() {
+	private void setRandomWalls() {
 		Wall randomWall;
 		Dimension randomWallSize;
 		Point randomWallCoordinates;
@@ -183,7 +211,7 @@ class Field extends JComponent implements MoveListener {
 		}
 	}
 	
-	Point generateCoordinates() {
+	private Point generateCoordinates() {
 		int x;
 		int y;
 		do {
@@ -195,7 +223,7 @@ class Field extends JComponent implements MoveListener {
 		return new Point(x, y);
 	}
 	
-	Dimension generateSize() {
+	private Dimension generateSize() {
 		int width = (int) (Math.random() * (maxRandomWallSize - minRandomWallSize + 1) + minRandomWallSize)
 				* AnyObject.defaultThickness;
 		int height  = (int) (Math.random() * (maxRandomWallSize - minRandomWallSize + 1) + minRandomWallSize)

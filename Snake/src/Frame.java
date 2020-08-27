@@ -1,20 +1,17 @@
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.File;
+import java.awt.event.*;
+import java.io.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 interface OptionListener {
-	void workWithOptions();
-	void confirmOptions();
+	void repaintRightPanel();
+	void repaintField();
 }
 
-class Frame extends JFrame implements ActionListener, OptionListener {
+class Frame extends JFrame implements OptionListener {
 	
 	private static final long serialVersionUID = 1L;
 	private int frameWidth = 535;
@@ -34,48 +31,21 @@ class Frame extends JFrame implements ActionListener, OptionListener {
 	
 	Frame() {
 		setBounds(frameLocationX, frameLocationY, frameWidth, frameHeight);
-		
-		WindowListener closeListener = new WindowListener() {
-			
+		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowOpened(WindowEvent e) {
-				// required by WindowListener interface, left empty as not used
-			}
-			@Override
-			public void windowIconified(WindowEvent e) {
-				// required by WindowListener interface, left empty as not used
-			}
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				// required by WindowListener interface, left empty as not used
-			}
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				// required by WindowListener interface, left empty as not used
-			}
-			@Override
-			public void windowClosed(WindowEvent e) {
-				// required by WindowListener interface, left empty as not used
-			}
-			@Override
-			public void windowActivated(WindowEvent e) {
-				// required by WindowListener interface, left empty as not used
-			}
-			@Override
-			public void windowClosing(WindowEvent e) {
+			public void windowClosing(WindowEvent we) {
 				panel.saveMaxScore();
 				try {
 					if (Config.fileExists(Config.fileName) && Config.fileEnabled) {
 						File file = new File(Config.fileName);
 						Config.fillConfigFile(file);
 					}
-				} catch (Exception exception) {
-					System.out.println("File not found. " + exception);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 				System.exit(0);
 			}
-		};
-		addWindowListener(closeListener);
+		});
 		setLayout(null);
 		setResizable(false);
 		
@@ -108,21 +78,19 @@ class Frame extends JFrame implements ActionListener, OptionListener {
 		panel.setLayout(null);
 		panel.setFocusable(false);
 		panel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-		panel.resetButton.addActionListener(this);
+		panel.resetButton.addActionListener(event -> {
+			this.panel.saveMaxScore();
+			this.panel.refreshScore(0);
+			remove(field);
+			field = makeField();
+			add(field);
+			repaint();
+			field.requestFocusInWindow();
+		});
 		return panel;
 	}
 	
-	public void actionPerformed(ActionEvent e) {
-		panel.saveMaxScore();
-		panel.refreshScore(0);
-		remove(field);
-		field = makeField();
-		add(field);
-		repaint();
-		field.requestFocusInWindow();
-	}
-	
-	public void workWithOptions() {
+	public void repaintRightPanel() {
 		setTitle(Config.getLang(Strings.SNAKE));
 		remove(panel);
 		panel = makeRightPanel();
@@ -130,7 +98,7 @@ class Frame extends JFrame implements ActionListener, OptionListener {
 		repaint();
 	}
 	
-	public void confirmOptions() {
+	public void repaintField() {
 		remove(field);
 		field = makeField();
 		add(field);

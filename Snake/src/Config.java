@@ -1,10 +1,5 @@
-import java.awt.Color;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
 
 enum Strings {
 	WALL,
@@ -39,10 +34,10 @@ public class Config {
 	public static Views viewConfiguration = Views.DEFAULT;
 	public static Languages langConfiguration = Languages.EN;
 	public static int maxScore = 0;
-	public final static String view = "view";
-	public final static String lang = "lang";
-	public final static String score = "score";
-	public static HashMap<String, String> configFileHashMap = new HashMap<String, String>();
+	private final static String view = "view";
+	private final static String lang = "lang";
+	private final static String score = "score";
+	private static HashMap<String, String> configFileHashMap = new HashMap<>();
 	
 	public static void changeView(String anotherViewString) {
 		if (anotherViewString != null) {
@@ -72,73 +67,8 @@ public class Config {
 				int score = Integer.parseInt(scoreString);
 				maxScore = score;
 			} catch (NumberFormatException e) {
-				System.out.print(e);
+				e.printStackTrace();
 			}
-		}
-	}
-	
-	public static void getView(Wall wall) {
-		switch (viewConfiguration) {
-		case DEFAULT:
-			wall.setOpaque(true);
-			wall.setBackground(Color.BLACK);
-			break;
-		case ONE:
-			wall.setOpaque(true);
-			wall.setBackground(Color.LIGHT_GRAY);
-			wall.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			break;
-		case TWO:
-			
-			break;
-		}
-	}
-	
-	public static void getView(Food food) {
-		switch (viewConfiguration) {
-		case DEFAULT:
-			food.setBorder(BorderFactory.createLineBorder(Color.black, 2));
-			break;
-		case ONE:
-			food.setOpaque(true);
-			food.setBackground(Color.WHITE);
-			food.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			break;
-		case TWO:
-			
-			break;
-		}
-	}
-	
-	public static void getView(Snake.SnakeBody body) {
-		switch (viewConfiguration) {
-		case DEFAULT:
-			body.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-			break;
-		case ONE:
-			body.setOpaque(true);
-			body.setBackground(Color.LIGHT_GRAY);
-			body.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			break;
-		case TWO:
-			
-			break;
-		}
-	}
-	
-	public static void getView(Snake.SnakeHead head) {
-		switch (viewConfiguration) {
-		case DEFAULT:
-			head.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			break;
-		case ONE:
-			head.setOpaque(true);
-			head.setBackground(Color.GRAY);
-			head.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			break;
-		case TWO:
-			
-			break;
 		}
 	}
 	
@@ -165,9 +95,9 @@ public class Config {
 			case SETTINGS:
 				return "Settings";
 			case DEL:
-				return "Delete \"" + Config.fileName + "\"";
+				return "Delete \"" + fileName + "\"";
 			case SAVE:
-				return "Save to \"" + Config.fileName + "\"";
+				return "Save to \"" + fileName + "\"";
 
 			default:
 				return "?";
@@ -193,9 +123,9 @@ public class Config {
 			case SETTINGS:
 				return "Настройки";
 			case DEL:
-				return "Удалить \"" + Config.fileName + "\"";
+				return "Удалить \"" + fileName + "\"";
 			case SAVE:
-				return "Сохранить в \"" + Config.fileName + "\"";
+				return "Сохранить в \"" + fileName + "\"";
 
 			default:
 				return "?";
@@ -211,18 +141,16 @@ public class Config {
 		configFileHashMap.put(score, String.valueOf(maxScore));
 	}
 	
-	public static void applyConfigFileHashMap() {
+	private static void applyConfigFileHashMap() {
 		changeView(configFileHashMap.get(view));
 		changeLang(configFileHashMap.get(lang));
 		changeMaxScore(configFileHashMap.get(score));
 	}
 	
-	public static String getConfigurations() {
+	private static String getConfigurations() {
 		createConfigFileHashMap();
 		
 		String file = "";
-		ArrayList<String> keys = new ArrayList<String>();
-		keys.addAll(configFileHashMap.keySet());
 		for (String key : configFileHashMap.keySet()) {
 			file += "<" + key + ">" + configFileHashMap.get(key) + "</" + key + ">" + "\n";
 		}
@@ -230,26 +158,19 @@ public class Config {
 	}
 	
 	public static boolean fileExists(String fileName) {
-		boolean exists = false;
-		try {
-			exists = new File(fileName).exists();
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return exists;
+		return new File(fileName).exists();
 	}
 	
 	public static void fillConfigFile(File file) throws IOException {
 		FileOutputStream fOut = new FileOutputStream(file);
 		BufferedWriter bOut = new BufferedWriter(new OutputStreamWriter(fOut, "UTF-8"));
-		bOut.write(Config.getConfigurations());
+		bOut.write(getConfigurations());
 		bOut.close();
 	}
 	
 	public static void workWithConfigFile() {
 		try {
-			String fConfigFileName = Config.fileName;
-			File fConfig = new File(fConfigFileName);
+			File fConfig = new File(fileName);
 			if (fConfig.createNewFile()) {
 				fillConfigFile(fConfig);
 			} else {
@@ -288,8 +209,8 @@ public class Config {
 							if (isKey && !isKeyCheck) {
 								isValue = true;
 							} else if (key.equalsIgnoreCase(keyCheck)) {
-								Config.configFileHashMap.put(key, value);
-								Config.applyConfigFileHashMap();
+								configFileHashMap.put(key, value);
+								applyConfigFileHashMap();
 								key = "";
 								keyCheck = "";
 								value = "";
@@ -309,8 +230,8 @@ public class Config {
 					}
 				}
 			}
-		} catch (Exception e) {
-			System.out.println("File not found. " + e);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class StartGame {
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		if (new File(Config.fileName).exists()) {
 			Config.fileEnabled = true;
 		}

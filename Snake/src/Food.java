@@ -1,5 +1,9 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+
+import javax.swing.BorderFactory;
+import javax.swing.border.BevelBorder;
 
 class Food extends AnyObject {
 	
@@ -12,9 +16,24 @@ class Food extends AnyObject {
 	public void makeFood(Point coordinates) {
 		Point foodLocation = coordinates;
 		Dimension foodSize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
-		Config.getView(this);
+		setView();
 		setLocation(foodLocation);
 		setSize(foodSize);
 	}
 	
+	private void setView() {
+		switch (Config.viewConfiguration) {
+		case DEFAULT:
+			setBorder(BorderFactory.createLineBorder(Color.black, 2));
+			break;
+		case ONE:
+			setOpaque(true);
+			setBackground(Color.WHITE);
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			break;
+		case TWO:
+			
+			break;
+		}
+	}
 }
