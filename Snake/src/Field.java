@@ -29,8 +29,10 @@ class Field extends JComponent {
 	private Snake snake;
 	private int maxSnakeLength;
 	private ScoreListener scoreListener;
+	private Config config;
 	
-	Field(int width, int height, ScoreListener scoreListener) {
+	Field(int width, int height, ScoreListener scoreListener, Config config) {
+		this.config = config;
 		this.scoreListener = scoreListener;
 		setSize(width, height);
 		setFocusable(true);
@@ -64,13 +66,13 @@ class Field extends JComponent {
 		
 		int snakeLeftX = (getWidth() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
 		int snakeUpY = (getHeight() / 2 / AnyObject.defaultThickness) * AnyObject.defaultThickness;
-		snake = new Snake(new Point(snakeLeftX, snakeUpY), Directions.DOWN);
+		snake = new Snake(new Point(snakeLeftX, snakeUpY), Directions.DOWN, config);
 		for (AnyObject snakeParts : snake.snakeBody) {
 			add(snakeParts);
 		}
 		maxSnakeLength = snake.snakeBody.size();
 		
-		food = new Food(generateCoordinates());
+		food = new Food(generateCoordinates(), config);
 		add(food);
 	}
 	
@@ -157,13 +159,13 @@ class Field extends JComponent {
 				getHeight() - 2 * AnyObject.defaultThickness);
 		Point rightWallCoordinates = new Point(getWidth() - AnyObject.defaultThickness, AnyObject.defaultThickness);
 		
-		upWall = new Wall(upWallCoordinates, upNDownWallSize);
+		upWall = new Wall(upWallCoordinates, upNDownWallSize, config);
 		add(upWall);
-		downWall = new Wall(downWallCoordinates, upNDownWallSize);
+		downWall = new Wall(downWallCoordinates, upNDownWallSize, config);
 		add(downWall);
-		leftWall = new Wall(leftWallCoordinates, leftNRightWallSize);
+		leftWall = new Wall(leftWallCoordinates, leftNRightWallSize, config);
 		add(leftWall);
-		rightWall = new Wall(rightWallCoordinates, leftNRightWallSize);
+		rightWall = new Wall(rightWallCoordinates, leftNRightWallSize, config);
 		add(rightWall);
 	}
 	
@@ -206,7 +208,7 @@ class Field extends JComponent {
 			} while (randomWallCoordinates.x + randomWallSize.width > getWidth() ||
 					randomWallCoordinates.y + randomWallSize.height > getHeight() ||
 					crossedX && crossedY);
-			randomWall = new Wall(randomWallCoordinates, randomWallSize);
+			randomWall = new Wall(randomWallCoordinates, randomWallSize, config);
 			add(randomWall);
 		}
 	}

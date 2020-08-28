@@ -8,15 +8,17 @@ import javax.swing.border.BevelBorder;
 class Wall extends AnyObject {
 	
 	private static final long serialVersionUID = 1L;
+	private Config config;
 	
-	Wall(Point coordinates, Dimension size) {
+	Wall(Point coordinates, Dimension size, Config config) {
+		this.config = config;
 		setLocation(coordinates);
 		setSize(size);
 		setView();
 	}
 	
 	private void setView() {
-		switch (Config.viewConfiguration) {
+		switch (config.getViewConfiguration()) {
 		case DEFAULT:
 			setOpaque(true);
 			setBackground(Color.BLACK);

@@ -24,8 +24,11 @@ class Snake {
 	public LinkedList<AnyObject> snakeBody;
 	private Dimension bodySize = new Dimension(AnyObject.defaultThickness, AnyObject.defaultThickness);
 	public boolean isFed = false;
+	private Config config;
 	
-	Snake(Point initCoordinates, Directions tailDirection) {
+	Snake(Point initCoordinates, Directions tailDirection, Config config) {
+		this.config = config;
+		
 		snakeBody = new LinkedList<AnyObject>();
 		
 		switch (tailDirection) {
@@ -66,7 +69,7 @@ class Snake {
 	}
 	
 	private void setView(SnakeBody body) {
-		switch (Config.viewConfiguration) {
+		switch (config.getViewConfiguration()) {
 		case DEFAULT:
 			body.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 			break;
@@ -82,7 +85,7 @@ class Snake {
 	}
 	
 	private void setView(Snake.SnakeHead head) {
-		switch (Config.viewConfiguration) {
+		switch (config.getViewConfiguration()) {
 		case DEFAULT:
 			head.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 			break;

@@ -23,33 +23,36 @@ class RightPanel extends JPanel implements ScoreListener {
 	private JLabel maxScoreLabel;
 	private int initialScore = 0;
 	private int currentScore = 0;
+	private Config config;
 	
-	RightPanel() {
+	RightPanel(Config config) {
+		this.config = config;
+		
 		Wall wallExample = new Wall(new Point(20, 20), 
-				new Dimension(2 * AnyObject.defaultThickness, AnyObject.defaultThickness));
+				new Dimension(2 * AnyObject.defaultThickness, AnyObject.defaultThickness), config);
 		add(wallExample);
 		
-		JLabel wallExplanationLabel = new JLabel(Config.getLang(Strings.WALL));
+		JLabel wallExplanationLabel = new JLabel(config.getLang(Strings.WALL));
 		wallExplanationLabel.setBounds(20, 30, 60, 20);
 		add(wallExplanationLabel);
 		
-		Food foodExample = new Food(new Point(20, 60));
+		Food foodExample = new Food(new Point(20, 60), config);
 		add(foodExample);
 		
-		JLabel foodExplanationLabel = new JLabel(Config.getLang(Strings.FOOD));
+		JLabel foodExplanationLabel = new JLabel(config.getLang(Strings.FOOD));
 		foodExplanationLabel.setBounds(20, 70, 60, 20);
 		add(foodExplanationLabel);
 		
-		Snake snakeExample = new Snake(new Point(20, 100), Directions.RIGHT);
+		Snake snakeExample = new Snake(new Point(20, 100), Directions.RIGHT, config);
 		for (AnyObject snakeParts : snakeExample.snakeBody) {
 			add(snakeParts);
 		}
 		
-		JLabel snakeExplanationLabel = new JLabel(Config.getLang(Strings.SNAKE));
+		JLabel snakeExplanationLabel = new JLabel(config.getLang(Strings.SNAKE));
 		snakeExplanationLabel.setBounds(20, 110, 60, 20);
 		add(snakeExplanationLabel);
 		
-		JLabel scoreExplanationLabel = new JLabel(Config.getLang(Strings.SCORE));
+		JLabel scoreExplanationLabel = new JLabel(config.getLang(Strings.SCORE));
 		scoreExplanationLabel.setBounds(20, 150, 60, 20);
 		scoreExplanationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(scoreExplanationLabel);
@@ -60,18 +63,18 @@ class RightPanel extends JPanel implements ScoreListener {
 		scoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
 		add(scoreLabel);
 		
-		JLabel maxScoreExplanationLabel = new JLabel(Config.getLang(Strings.RECORD));
+		JLabel maxScoreExplanationLabel = new JLabel(config.getLang(Strings.RECORD));
 		maxScoreExplanationLabel.setBounds(20, 210, 60, 20);
 		maxScoreExplanationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(maxScoreExplanationLabel);
 		
-		maxScoreLabel = new JLabel(String.valueOf(Config.maxScore), SwingConstants.CENTER);
+		maxScoreLabel = new JLabel(String.valueOf(config.getMaxScore()), SwingConstants.CENTER);
 		maxScoreLabel.setBounds(20, 230, 60, 40);
 		maxScoreLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		maxScoreLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 28));
 		add(maxScoreLabel);
 		
-		resetButton = new JButton(Config.getLang(Strings.RESET));
+		resetButton = new JButton(config.getLang(Strings.RESET));
 		resetButton.setBounds(20, 290, 60, 40);
 		resetButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 7));
 		resetButton.setFocusable(false);
@@ -86,9 +89,9 @@ class RightPanel extends JPanel implements ScoreListener {
 	}
 	
 	public void saveMaxScore() {
-		if (currentScore > Config.maxScore) {
-			Config.maxScore = currentScore;
-			maxScoreLabel.setText(String.valueOf(Config.maxScore));
+		if (currentScore > config.getMaxScore()) {
+			config.setMaxScore(currentScore);
+			maxScoreLabel.setText(String.valueOf(config.getMaxScore()));
 		}
 	}
 	

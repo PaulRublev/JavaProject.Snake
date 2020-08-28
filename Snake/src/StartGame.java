@@ -5,19 +5,21 @@ import javax.swing.*;
 public class StartGame {
 	
 	public static void main(String[] args) {
+		Config config = new Config();
+		
 		if (new File(Config.fileName).exists()) {
-			Config.fileEnabled = true;
+			config.setFileEnabled(true);
 		}
 		
-		if (Config.fileEnabled) {
-			Config.workWithConfigFile();
+		if (config.isFileEnabled()) {
+			config.workWithConfigFile();
 		}
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				JFrame.setDefaultLookAndFeelDecorated(true);
-				Frame frame = new Frame();
-				frame.setTitle(Config.getLang(Strings.SNAKE));
+				Frame frame = new Frame(config);
+				frame.setTitle(config.getLang(Strings.SNAKE));
 				frame.setVisible(true);
 			}
 		});

@@ -14,16 +14,16 @@ public class OptionField extends JComponent {
 	private JLabel viewExplanationLabel;
 	private JLabel langExplanationLabel;
 	
-	OptionField(int width, int height, OptionListener optionListener) {
+	OptionField(int width, int height, OptionListener optionListener, Config config) {
 		setSize(width, height);
 		
-		titleLabel = new JLabel(Config.getLang(Strings.SETTINGS));
+		titleLabel = new JLabel(config.getLang(Strings.SETTINGS));
 		titleLabel.setLocation(150, 10);
 		titleLabel.setSize(140, 40);
 		titleLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
 		add(titleLabel);
 		
-		viewExplanationLabel = new JLabel(Config.getLang(Strings.CHOOSE_VIEW));
+		viewExplanationLabel = new JLabel(config.getLang(Strings.CHOOSE_VIEW));
 		viewExplanationLabel.setLocation(10, 60);
 		viewExplanationLabel.setSize(100, 20);
 		add(viewExplanationLabel);
@@ -31,7 +31,7 @@ public class OptionField extends JComponent {
 		ActionListener viewListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Config.changeView(e.getActionCommand());
+				config.changeView(e.getActionCommand());
 				optionListener.repaintRightPanel();
 			}
 		};
@@ -60,7 +60,7 @@ public class OptionField extends JComponent {
 		viewButtonGroup.add(oneCustomViewButton);
 		viewButtonGroup.add(twoCustomViewButton);
 		
-		switch (Config.viewConfiguration) {
+		switch (config.getViewConfiguration()) {
 		case DEFAULT:
 			defaultViewButton.setSelected(true);
 			break;
@@ -78,7 +78,7 @@ public class OptionField extends JComponent {
 		add(oneCustomViewButton);
 		add(twoCustomViewButton);
 		
-		langExplanationLabel = new JLabel(Config.getLang(Strings.CHOOSE_LANG));
+		langExplanationLabel = new JLabel(config.getLang(Strings.CHOOSE_LANG));
 		langExplanationLabel.setLocation(140, 60);
 		langExplanationLabel.setSize(140, 20);
 		add(langExplanationLabel);
@@ -86,13 +86,13 @@ public class OptionField extends JComponent {
 		ActionListener langListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Config.changeLang(e.getActionCommand());
+				config.changeLang(e.getActionCommand());
 				optionListener.repaintRightPanel();
-				fileEnabledCheckBox.setText(Config.getLang(Strings.SAVE));
-				fileToDeleteCheckBox.setText(Config.getLang(Strings.DEL));
-				titleLabel.setText(Config.getLang(Strings.SETTINGS));
-				viewExplanationLabel.setText(Config.getLang(Strings.CHOOSE_VIEW));
-				langExplanationLabel.setText(Config.getLang(Strings.CHOOSE_LANG));
+				fileEnabledCheckBox.setText(config.getLang(Strings.SAVE));
+				fileToDeleteCheckBox.setText(config.getLang(Strings.DEL));
+				titleLabel.setText(config.getLang(Strings.SETTINGS));
+				viewExplanationLabel.setText(config.getLang(Strings.CHOOSE_VIEW));
+				langExplanationLabel.setText(config.getLang(Strings.CHOOSE_LANG));
 			}
 		};
 		
@@ -112,7 +112,7 @@ public class OptionField extends JComponent {
 		langButtonGroup.add(enRadioButton);
 		langButtonGroup.add(ruRadioButton);
 		
-		switch (Config.langConfiguration) {
+		switch (config.getLangConfiguration()) {
 		case EN:
 			enRadioButton.setSelected(true);
 			break;
@@ -126,7 +126,7 @@ public class OptionField extends JComponent {
 		add(ruRadioButton);
 		add(enRadioButton);
 		
-		fileToDeleteCheckBox = new JCheckBox(Config.getLang(Strings.DEL));
+		fileToDeleteCheckBox = new JCheckBox(config.getLang(Strings.DEL));
 		fileToDeleteCheckBox.setLocation(10, 305);
 		fileToDeleteCheckBox.setSize(240, 20);
 		fileToDeleteCheckBox.setEnabled(false);
@@ -134,27 +134,27 @@ public class OptionField extends JComponent {
 		fileToDeleteCheckBox.addItemListener(event -> {
 			if (event.getStateChange() == ItemEvent.DESELECTED) {
 				fileEnabledCheckBox.setEnabled(true);
-				Config.fileToDelete = false;
+				config.setFileToDelete(false);
 			} else if (event.getStateChange() == ItemEvent.SELECTED) {
 				fileEnabledCheckBox.setEnabled(false);
-				Config.fileToDelete = true;
+				config.setFileToDelete(true);
 			}
 		});
 		add(fileToDeleteCheckBox);
 		
-		fileEnabledCheckBox = new JCheckBox(Config.getLang(Strings.SAVE));
+		fileEnabledCheckBox = new JCheckBox(config.getLang(Strings.SAVE));
 		fileEnabledCheckBox.setLocation(10, 325);
 		fileEnabledCheckBox.setSize(240, 20);
-		fileEnabledCheckBox.setSelected(Config.fileEnabled);
+		fileEnabledCheckBox.setSelected(config.isFileEnabled());
 		fileEnabledCheckBox.addItemListener(event -> {
 			if (fileEnabledCheckBox == event.getItemSelectable()) {
 				if (event.getStateChange() == ItemEvent.DESELECTED) {
-					Config.fileEnabled = false;
+					config.setFileEnabled(false);
 					if (Config.fileExists(Config.fileName)) {
 						fileToDeleteCheckBox.setEnabled(true);
 					}
 				} else if (event.getStateChange() == ItemEvent.SELECTED) {
-					Config.fileEnabled = true;
+					config.setFileEnabled(true);
 					fileToDeleteCheckBox.setEnabled(false);
 					fileToDeleteCheckBox.setSelected(false);
 				}
@@ -170,9 +170,9 @@ public class OptionField extends JComponent {
 			optionListener.repaintField();
 			try {
 				File file = new File(Config.fileName);
-				if (Config.fileEnabled) {
-					Config.fillConfigFile(file);
-				} else if (Config.fileToDelete) {
+				if (config.isFileEnabled()) {
+					config.fillConfigFile(file);
+				} else if (config.isFileToDelete()) {
 					file.delete();
 				}
 			} catch (IOException e) {

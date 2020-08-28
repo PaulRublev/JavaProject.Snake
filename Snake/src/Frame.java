@@ -28,17 +28,19 @@ class Frame extends JFrame implements OptionListener {
 	private int rightPanelY = 10;
 	private RightPanel panel;
 	private JComponent field;
+	private Config config;
 	
-	Frame() {
+	Frame(Config config) {
+		this.config = config;
 		setBounds(frameLocationX, frameLocationY, frameWidth, frameHeight);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
 				panel.saveMaxScore();
 				try {
-					if (Config.fileExists(Config.fileName) && Config.fileEnabled) {
+					if (Config.fileExists(Config.fileName) && config.isFileEnabled()) {
 						File file = new File(Config.fileName);
-						Config.fillConfigFile(file);
+						config.fillConfigFile(file);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -57,14 +59,14 @@ class Frame extends JFrame implements OptionListener {
 	}
 	
 	private OptionField makeOptionField() {
-		OptionField field = new OptionField(fieldWidth, fieldHeight, this);
+		OptionField field = new OptionField(fieldWidth, fieldHeight, this, config);
 		field.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		field.setLocation(fieldX, fieldY);
 		return field;
 	}
 	
 	private Field makeField() {
-		Field field = new Field(fieldWidth, fieldHeight, panel);
+		Field field = new Field(fieldWidth, fieldHeight, panel, config);
 		field.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		field.setLocation(fieldX, fieldY);
 		field.setLayout(null);
@@ -72,7 +74,7 @@ class Frame extends JFrame implements OptionListener {
 	}
 	
 	private RightPanel makeRightPanel() {
-		RightPanel panel = new RightPanel();
+		RightPanel panel = new RightPanel(config);
 		panel.setSize(rightPanelWidth, rightPanelHeight);
 		panel.setLocation(rightPanelX, rightPanelY);
 		panel.setLayout(null);
@@ -91,7 +93,7 @@ class Frame extends JFrame implements OptionListener {
 	}
 	
 	public void repaintRightPanel() {
-		setTitle(Config.getLang(Strings.SNAKE));
+		setTitle(config.getLang(Strings.SNAKE));
 		remove(panel);
 		panel = makeRightPanel();
 		add(panel);

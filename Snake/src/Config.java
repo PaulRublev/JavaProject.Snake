@@ -29,17 +29,21 @@ enum Languages {
 public class Config {
 	
 	public static final String fileName = "./config.md";
-	public static boolean fileToDelete = false;
-	public static boolean fileEnabled = false;
-	public static Views viewConfiguration = Views.DEFAULT;
-	public static Languages langConfiguration = Languages.EN;
-	public static int maxScore = 0;
+	private boolean fileToDelete = false;
+	private boolean fileEnabled = false;
+	private Views viewConfiguration = Views.DEFAULT;
+	private Languages langConfiguration = Languages.EN;
+	private int maxScore = 0;
 	private final static String view = "view";
 	private final static String lang = "lang";
 	private final static String score = "score";
-	private static HashMap<String, String> configFileHashMap = new HashMap<>();
+	private HashMap<String, String> configFileHashMap = new HashMap<>();
 	
-	public static void changeView(String anotherViewString) {
+	Config() {
+		createConfigFileHashMap();
+	}
+	
+	public void changeView(String anotherViewString) {
 		if (anotherViewString != null) {
 			if (anotherViewString.equalsIgnoreCase(Views.ONE.toString())) {
 				viewConfiguration = Views.ONE;
@@ -51,7 +55,7 @@ public class Config {
 		}
 	}
 	
-	public static void changeLang(String anotherLangString) {
+	public void changeLang(String anotherLangString) {
 		if (anotherLangString != null) {
 			if (anotherLangString.equalsIgnoreCase(Languages.EN.toString())) {
 				langConfiguration = Languages.EN;
@@ -61,7 +65,7 @@ public class Config {
 		}
 	}
 	
-	public static void changeMaxScore(String scoreString) {
+	public void changeMaxScore(String scoreString) {
 		if (scoreString != null) {
 			try {
 				int score = Integer.parseInt(scoreString);
@@ -72,7 +76,7 @@ public class Config {
 		}
 	}
 	
-	public static String getLang(Strings string) {
+	public String getLang(Strings string) {
 		switch (langConfiguration) {
 		case EN:
 			switch (string) {
@@ -135,19 +139,19 @@ public class Config {
 		}
 	}
 	
-	private static void createConfigFileHashMap() {
+	private void createConfigFileHashMap() {
 		configFileHashMap.put(view, viewConfiguration.toString());
 		configFileHashMap.put(lang, langConfiguration.toString());
 		configFileHashMap.put(score, String.valueOf(maxScore));
 	}
 	
-	private static void applyConfigFileHashMap() {
+	private void applyConfigFileHashMap() {
 		changeView(configFileHashMap.get(view));
 		changeLang(configFileHashMap.get(lang));
 		changeMaxScore(configFileHashMap.get(score));
 	}
 	
-	private static String getConfigurations() {
+	private String getConfigurations() {
 		createConfigFileHashMap();
 		
 		String file = "";
@@ -161,14 +165,14 @@ public class Config {
 		return new File(fileName).exists();
 	}
 	
-	public static void fillConfigFile(File file) throws IOException {
+	public void fillConfigFile(File file) throws IOException {
 		FileOutputStream fOut = new FileOutputStream(file);
 		BufferedWriter bOut = new BufferedWriter(new OutputStreamWriter(fOut, "UTF-8"));
 		bOut.write(getConfigurations());
 		bOut.close();
 	}
 	
-	public static void workWithConfigFile() {
+	public void workWithConfigFile() {
 		try {
 			File fConfig = new File(fileName);
 			if (fConfig.createNewFile()) {
@@ -233,6 +237,46 @@ public class Config {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setFileToDelete(boolean state) {
+		fileToDelete = state;
+	}
+	
+	public boolean isFileToDelete() {
+		return fileToDelete;
+	}
+	
+	public void setFileEnabled(boolean state) {
+		fileEnabled = state;
+	}
+	
+	public boolean isFileEnabled() {
+		return fileEnabled;
+	}
+	
+	public void setViewConfiguration(Views view) {
+		viewConfiguration = view;
+	}
+	
+	public Views getViewConfiguration() {
+		return viewConfiguration;
+	}
+	
+	public void setLangConfiguration(Languages lang) {
+		langConfiguration = lang;
+	}
+	
+	public Languages getLangConfiguration() {
+		return langConfiguration;
+	}
+	
+	public void setMaxScore(int score) {
+		maxScore = score;
+	}
+	
+	public int getMaxScore() {
+		return maxScore;
 	}
 	
 }

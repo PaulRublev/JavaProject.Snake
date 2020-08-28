@@ -8,8 +8,10 @@ import javax.swing.border.BevelBorder;
 class Food extends AnyObject {
 	
 	private static final long serialVersionUID = 1L;
+	private Config config;
 	
-	Food(Point coordinates) {
+	Food(Point coordinates, Config config) {
+		this.config = config;
 		makeFood(coordinates);
 	}
 	
@@ -22,7 +24,7 @@ class Food extends AnyObject {
 	}
 	
 	private void setView() {
-		switch (Config.viewConfiguration) {
+		switch (config.getViewConfiguration()) {
 		case DEFAULT:
 			setBorder(BorderFactory.createLineBorder(Color.black, 2));
 			break;
